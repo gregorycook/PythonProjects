@@ -3,10 +3,10 @@ import csv
 import sys, getopt
 
 config = {
-  'user': 'bookkeeper',
-  'password': '12xuxu12',
+  'user': 'username',
+  'password': 'password',
   'host': '127.0.0.1',
-  'database': 'cedars',
+  'database': 'database',
 }
 	
 add_payment = ("INSERT INTO payment "

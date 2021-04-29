@@ -1,0 +1,82 @@
+<html lang="en">
+    <head>
+        <style type="text/css">
+
+            .bold {
+            	font-weight: bold
+            }
+
+            .normal {
+            	font-weight: normal
+            }
+
+            .grid-container {
+              display: grid;
+              grid-template-columns: 350px 350px auto;
+              font-size: 16px;
+              font-family: "Verdana",
+              sans-serif;'
+            }
+
+            .team_table {
+                font-size: 14px;
+                font-family: "Verdana", sans-serif;
+                text-align: center;
+            }
+
+            .team_table td {
+                padding: 0px 10px;
+            }
+
+            .title{
+                font-size: 18px;
+                font-family: "Didot",
+                serif;
+                font-weight: bold;
+            }
+
+            .team-text{
+                font-size: 16px;
+                font-family: "Didot",
+                serif;
+                font-weight: bold;
+            }
+
+        </style>
+        <title>2021 Baseball Over/Under White Board</title>
+    </head>
+    <body>
+        <div class = "title">Last Updated: <LastUpdated/> UTC</p></div>
+        <div class="title">Teams</div>
+        <div class="grid-container">
+            <TeamTables/>
+            <div style='grid-column: 1 / span 2;'><p class='title'>Team Record and Predictions</p><RecordTable/></div>
+            <div style='grid-column: 1 / span 2;'>
+                <p class='title'>Over/Under Table</p>
+                <table class="team_table">
+                <tr>
+                    <td></td>
+                    <td>Value</td>
+                    <td>Over</td>
+                    <td>Under</td>
+                    <td>Current</td>
+                    <td>Projected</td>
+                </tr>
+                <OverUnderRows/>
+                </table>
+            </div>
+            <div style='grid-column: 1 / span 2;'>
+                <p class='title'>Other Table</p>
+                <table class="team_table">
+                <tr>
+                    <td></td>
+                    <td>Thing</td>
+                    <td>Relevant Stat</td>
+                    <td>Projected Winner</td>
+                </tr>
+                <OtherRows/>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
