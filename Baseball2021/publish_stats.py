@@ -488,12 +488,26 @@ def get_other_table(stats):
     return "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
 
 
+DATA_FILE_PATH = "data/{}.json"
+
+
+def save_stats(stats):
+    gp = stats["Mariners"]["Wins"] + stats["Mariners"]["Losses"]
+    daily_data_file_name = DATA_FILE_PATH.format(str(gp))
+    stats_json = json.dumps(stats)
+    stats_file = open(daily_data_file_name, "w")
+    stats_file.write(stats_json)
+    stats_file.close()
+
+    return gp
+
+
 def get_previous_data(gp):
     attempt = 0
     stats = None
     while attempt < 5 and stats is None:
         attempt += 1
-        previous_data_file_name = "data/{}.json".format(str(gp - attempt))
+        previous_data_file_name = DATA_FILE_PATH.format(str(gp - attempt))
         if os.path.exists(previous_data_file_name):
             with open(previous_data_file_name) as previous_data_file:
                 stats = json.load(previous_data_file)
@@ -524,46 +538,47 @@ def upload_site():
 
         index_html_file.close()
 
-# get today's stats
-new_stats = get_stat_dict()
 
-# calculate games played and save stats to file
-gp = new_stats["Mariners"]["Wins"] + new_stats["Mariners"]["Losses"]
-daily_data_file_name = "data/{}.json".format(str(gp))
-stats_json = json.dumps(new_stats)
-stats_file = open(daily_data_file_name, "w")
-stats_file.write(stats_json)
-stats_file.close()
+def main():
+    # get today's stats
+    new_stats = get_stat_dict()
 
-# load previous stats from file
-previous_gp, old_stats = get_previous_data(gp)
+    # calculate games played and save stats to file
+    games_played = save_stats(new_stats)
 
-html_base = None
-with open('white_board.template', "r") as text_file:
-    html_base = text_file.readlines()
-html_base = ''.join(html_base)
-html_text = html_base
+    # load previous stats from file
+    previous_games_played, old_stats = get_previous_data(games_played)
 
-# set last updated and other header stuff
-html_text = html_text.replace("<LastUpdated/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
-html_text = html_text.replace("<GamesPlayed/>", str(gp))
-html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_gp))
+    html_base = None
+    with open('white_board.template', "r") as text_file:
+        html_base = text_file.readlines()
+    html_base = ''.join(html_base)
+    html_text = html_base
 
-# set team tables
-team_tables = get_team_tables(new_stats, old_stats)
-html_text = html_text.replace("<TeamTables/>", team_tables)
+    # set last updated and other header stuff
+    html_text = html_text.replace("<LastUpdated/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<GamesPlayed/>", str(games_played))
+    html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
-# win table
-record_table_html = get_projected_record_table(new_stats)
-html_text = html_text.replace("<RecordTable/>", record_table_html)
+    # set team tables
+    team_tables = get_team_tables(new_stats, old_stats)
+    html_text = html_text.replace("<TeamTables/>", team_tables)
 
-# over/under table
-row_html = get_over_under_table(new_stats)
-html_text = html_text.replace("<OverUnderRows/>", row_html)
+    # win table
+    record_table_html = get_projected_record_table(new_stats)
+    html_text = html_text.replace("<RecordTable/>", record_table_html)
 
-# other table
-row_html = get_other_table(new_stats)
-html_text = html_text.replace("<OtherRows/>", row_html)
+    # over/under table
+    row_html = get_over_under_table(new_stats)
+    html_text = html_text.replace("<OverUnderRows/>", row_html)
 
-save_html(html_text)
-upload_site()
+    # other table
+    row_html = get_other_table(new_stats)
+    html_text = html_text.replace("<OtherRows/>", row_html)
+
+    save_html(html_text)
+    upload_site()
+
+
+if __name__ == "__main__":
+    main()
