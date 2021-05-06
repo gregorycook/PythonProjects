@@ -1,4 +1,7 @@
+import json
+import os
 import uuid
+
 from datetime import datetime
 from ftplib import FTP
 from lxml import html
@@ -240,7 +243,7 @@ teams = {
     ]
 }
 
-def get_team_tables(stats):
+def get_team_tables(new_stats, old_stats):
     team_tables = []
     team_number = 0
     for team in teams:
@@ -249,21 +252,22 @@ def get_team_tables(stats):
         table = "<div style='grid-column: {}; grid-row: 1;'><p class='team-text'>Team {}</p>\r\n<table class='team_table'>\r\n\t<thead><tr>\r\n\t\t<td>Pick</td>\r\n\t\t<td>Name</td>\r\n\t\t<td>WAR</td>\r\n\t</tr></thead>".format(str(team_number), team)
         high_war = -10
         for player in teams[team]:
-            war = stats[player[1]]["WAR"]
+            war = new_stats[player[1]]["WAR"]
             if war > high_war:
                 high_war = war
         for player in teams[team]:
-            war = stats[player[1]]["WAR"]
+            war = new_stats[player[1]]["WAR"]
+            old_war = old_stats[player[1]]["WAR"]
             total_war = total_war + war
             war_column_class = "normal"
             if war == high_war:
                 war_column_class = "bold"
             player_html = "<a href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(player[1][0].lower(),  player_br[player[1]], player[2])
-            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}'>{:.1f}</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war)
+            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}'>{:.1f} ({:.1f})</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war, war - old_war)
             table = table + row
 
-        stats["Mariners"][team] = total_war
-        table = table + "</table>\r\n<p/>Total War: {:.1f}<p/></div>".format(total_war)
+        new_stats["Mariners"][team] = total_war
+        table = table + "</table>\r\n<p/>Total War: {:.1f} ({:.1f})<p/></div>".format(total_war, total_war - old_stats["Mariners"][team])
         team_tables.append(table)
 
     return "<p/>".join(team_tables)
@@ -484,6 +488,18 @@ def get_other_table(stats):
     return "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
 
 
+def get_previous_data(gp):
+    attempt = 0
+    stats = None
+    while attempt < 5 and stats is None:
+        attempt += 1
+        previous_data_file_name = "data/{}.json".format(str(gp - attempt))
+        if os.path.exists(previous_data_file_name):
+            with open(previous_data_file_name) as previous_data_file:
+                stats = json.load(previous_data_file)
+                return gp - attempt, stats
+
+
 def save_html(site_html):
     index_html_file = open("white_board.html", "w")
     index_html_file.write(site_html)
@@ -491,23 +507,36 @@ def save_html(site_html):
 
 
 def upload_site():
-    index_html_file = open("white_board.html", "rb")
-    try:
-        ftp = FTP("[ftp-site]")
-        ftp.login("username", "password")
-        ftp.cwd("[change to this directory]")
-        ftp.cwd("[change to this directory]")
-        ftp.sendcmd('TYPE A')
-        ftp.storlines('STOR [put the file in as this name]', index_html_file)
-    except Exception as e:
-        print(e)
-    finally:
-        ftp.close()
+    with open("ftp_creds.json") as ftp_creds_file:
+        ftp_creds = json.load(ftp_creds_file)
+        index_html_file = open("white_board.html", "rb")
+        try:
+            ftp = FTP(ftp_creds["FTP_Site"])
+            ftp.login(ftp_creds["FTP_UserName"], ftp_creds["FTP_Password"])
+            ftp.cwd("cakewood.net")
+            ftp.cwd("2021BaseballOverUnder")
+            ftp.sendcmd('TYPE A')
+            ftp.storlines('STOR white_board.html', index_html_file)
+        except Exception as e:
+            print(e)
+        finally:
+            ftp.close()
 
-    index_html_file.close()
+        index_html_file.close()
 
+# get today's stats
+new_stats = get_stat_dict()
 
-stats = get_stat_dict()
+# calculate games played and save stats to file
+gp = new_stats["Mariners"]["Wins"] + new_stats["Mariners"]["Losses"]
+daily_data_file_name = "data/{}.json".format(str(gp))
+stats_json = json.dumps(new_stats)
+stats_file = open(daily_data_file_name, "w")
+stats_file.write(stats_json)
+stats_file.close()
+
+# load previous stats from file
+previous_gp, old_stats = get_previous_data(gp)
 
 html_base = None
 with open('white_board.template', "r") as text_file:
@@ -515,23 +544,25 @@ with open('white_board.template', "r") as text_file:
 html_base = ''.join(html_base)
 html_text = html_base
 
-# set last updated
+# set last updated and other header stuff
 html_text = html_text.replace("<LastUpdated/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
+html_text = html_text.replace("<GamesPlayed/>", str(gp))
+html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_gp))
 
 # set team tables
-team_tables = get_team_tables(stats)
+team_tables = get_team_tables(new_stats, old_stats)
 html_text = html_text.replace("<TeamTables/>", team_tables)
 
 # win table
-record_table_html = get_projected_record_table(stats)
+record_table_html = get_projected_record_table(new_stats)
 html_text = html_text.replace("<RecordTable/>", record_table_html)
 
 # over/under table
-row_html = get_over_under_table(stats)
+row_html = get_over_under_table(new_stats)
 html_text = html_text.replace("<OverUnderRows/>", row_html)
 
 # other table
-row_html = get_other_table(stats)
+row_html = get_other_table(new_stats)
 html_text = html_text.replace("<OtherRows/>", row_html)
 
 save_html(html_text)
