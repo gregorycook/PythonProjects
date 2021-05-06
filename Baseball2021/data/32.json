@@ -1,1 +1,75 @@
-{"Seager": {"HRs": 5.0, "WAR": 0.9}, "Gonzales": {"ERA": 5.4, "WAR": 0.0}, "Paxton": {"Starts": 1.0, "WAR": 0.0}, "Moore": {"WAR": 0.1}, "France": {"WAR": 0.6}, "White": {"WAR": -0.5}, "Kelenic": {"OPS": 0, "WAR": 0}, "Gilbert": {"WAR": 0}, "Flexen": {"WAR": 0.4}, "Kikuchi": {"WAR": 0.3}, "Lewis": {"WAR": 0.2}, "Haniger": {"HRs": 8.0, "WAR": 0.7}, "Murphy": {"HRs": 3.0, "WAR": -0.1}, "Crawford": {"WAR": 0.7}, "Sheffield": {"WAR": 0.0}, "Trammel": {"WAR": 0.1}, "Dunn": {"WAR": 0.4}, "Fraley": {"WAR": 0.1}, "Middleton": {"WAR": 0.2}, "Haggerty": {"WAR": 0.1}, "Mariners": {"PitcherCount": 22.0, "Wins": 17, "Losses": 15, "RunsScored": 127.0, "RunsAllowed": 134.0}}
+{
+	"Seager": {
+		"HRs": 5.0,
+		"WAR": 0.9
+	},
+	"Gonzales": {
+		"ERA": 5.4,
+		"WAR": 0.0
+	},
+	"Paxton": {
+		"Starts": 1.0,
+		"WAR": 0.0
+	},
+	"Moore": {
+		"WAR": 0.1
+	},
+	"France": {
+		"WAR": 0.6
+	},
+	"White": {
+		"WAR": -0.5
+	},
+	"Kelenic": {
+		"OPS": 0,
+		"WAR": 0
+	},
+	"Gilbert": {
+		"WAR": 0
+	},
+	"Flexen": {
+		"WAR": 0.4
+	},
+	"Kikuchi": {
+		"WAR": 0.3
+	},
+	"Lewis": {
+		"WAR": 0.2
+	},
+	"Haniger": {
+		"HRs": 8.0,
+		"WAR": 0.7
+	},
+	"Murphy": {
+		"HRs": 3.0,
+		"WAR": -0.1
+	},
+	"Crawford": {
+		"WAR": 0.7
+	},
+	"Sheffield": {
+		"WAR": 0.0
+	},
+	"Trammel": {
+		"WAR": 0.1
+	},
+	"Dunn": {
+		"WAR": 0.4
+	},
+	"Fraley": {
+		"WAR": 0.1
+	},
+	"Middleton": {
+		"WAR": 0.2
+	},
+	"Haggerty": {
+		"WAR": 0.1
+	},
+	"Mariners": {
+		"PitcherCount": 22.0,
+		"Wins": 17,
+		"Losses": 15,
+		"RunsScored": 127.0,
+		"RunsAllowed": 134.0
+	}
+}
