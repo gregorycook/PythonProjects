@@ -66,10 +66,12 @@
 		"WAR": 0.1
 	},
 	"Mariners": {
-		"PitcherCount": 22.0,
+		"PitcherCount": 20.0,
 		"Wins": 17,
 		"Losses": 15,
 		"RunsScored": 127.0,
-		"RunsAllowed": 134.0
+		"RunsAllowed": 134.0,
+		"Hans": 1.8,
+		"Gregory": 2.4
 	}
 }

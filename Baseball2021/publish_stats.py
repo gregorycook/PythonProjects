@@ -88,7 +88,7 @@ def get_pitcher_count():
     site = mariners_team_pitching_site
     page = requests.get(site, headers)
     tree = html.fromstring(page.text)
-    value = tree.xpath(mariners_pitcher_count_xpath)
+    value = tree.xpath(mariners_pitcher_count_xpath) - 2
 
     return value
 
@@ -378,10 +378,10 @@ def get_over_under_table(stats):
     # html_text = html_text.replace("<NegativeWARCount/>", "{:.0f}".format(total_negative_war))
 
     pitcher_count = stats["Mariners"]["PitcherCount"]
-    projected_pitcher_count = 162 / (wins + losses) * (pitcher_count - 16) + 14
+    projected_pitcher_count = (pitcher_count-14) * (162 / (wins + losses)) + 14
     if projected_pitcher_count < 14:
         projected_pitcher_count = 14
-    over_unders["PitcherCount"]["Current"] = pitcher_count - 2
+    over_unders["PitcherCount"]["Current"] = pitcher_count
     over_unders["PitcherCount"]["Projected"] = projected_pitcher_count
 
     paxton_starts = stats["Paxton"]["Starts"]
@@ -499,8 +499,6 @@ def save_stats(stats):
     stats_file.write(stats_json)
     stats_file.close()
 
-    return gp
-
 
 def get_previous_data(gp):
     attempt = 0
@@ -543,10 +541,8 @@ def main():
     # get today's stats
     new_stats = get_stat_dict()
 
-    # calculate games played and save stats to file
-    games_played = save_stats(new_stats)
-
     # load previous stats from file
+    games_played = new_stats["Mariners"]["Wins"] + new_stats["Mariners"]["Losses"]
     previous_games_played, old_stats = get_previous_data(games_played)
 
     html_base = None
@@ -578,6 +574,9 @@ def main():
 
     save_html(html_text)
     upload_site()
+
+    # saving these at the end because they get updated a couple of times throughout the process
+    save_stats(new_stats)
 
 
 if __name__ == "__main__":
