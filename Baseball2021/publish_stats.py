@@ -415,7 +415,7 @@ def get_over_under_table(stats):
                          num1=item["Current"], places1=rounding[0], num2=item["Projected"], places2=rounding[1])
         rows.append(row)
 
-    return "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
+    return over_unders, "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
 
 
 def get_other_table(stats):
@@ -485,7 +485,28 @@ def get_other_table(stats):
         row = row.format(item["Title"], item["Thing"], item["Relevant"], item["Winner"])
         rows.append(row)
 
-    return "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
+    return others, "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
+
+
+def calculate_scores(over_unders, others):
+    hans = 0
+    gregory = 0
+    for item in over_unders:
+        over = over_unders[item]["Projected"] > over_unders[item]["Value"]
+        if over and over_unders[item]["Over"] == "Hans":
+            hans += 1
+        elif not over and over_unders[item]["Under"] == "Hans":
+            hans += 1
+        else:
+            gregory += 1
+
+    for item in others:
+        if others[item]["Winner"] == "Hans":
+            hans += 1
+        else:
+            gregory += 1
+
+    return hans, gregory
 
 
 DATA_FILE_PATH = "data/{}.json"
@@ -565,12 +586,17 @@ def main():
     html_text = html_text.replace("<RecordTable/>", record_table_html)
 
     # over/under table
-    row_html = get_over_under_table(new_stats)
+    over_unders, row_html = get_over_under_table(new_stats)
     html_text = html_text.replace("<OverUnderRows/>", row_html)
 
     # other table
-    row_html = get_other_table(new_stats)
+    others, row_html = get_other_table(new_stats)
     html_text = html_text.replace("<OtherRows/>", row_html)
+
+    # put in totals
+    hans, gregory = calculate_scores(over_unders, others)
+    html_text = html_text.replace("<Hans/>", str(hans))
+    html_text = html_text.replace("<Gregory/>", str(gregory))
 
     save_html(html_text)
     upload_site()

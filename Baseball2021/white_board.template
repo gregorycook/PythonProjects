@@ -12,7 +12,7 @@
 
             .grid-container {
               display: grid;
-              grid-template-columns: 350px 350px auto;
+              grid-template-columns: 350px 350px 200px auto;
               font-size: 16px;
               font-family: "Verdana",
               sans-serif;'
@@ -81,6 +81,9 @@
                 </tr>
                 <OtherRows/>
                 </table>
+            </div>
+            <div style='grid-column: 3; grid-row: 1; text-align: center;'>
+                <p/>Hans: <Hans/><p/>Gregory: <Gregory/>
             </div>
         </div>
     </body>
