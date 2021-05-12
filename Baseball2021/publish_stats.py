@@ -44,14 +44,14 @@ player_br = {
 def get_standard_stat(player, stat_name, stat_type):
     player_key = player_br[player]
     main_player_page = "https://widgets.sports-reference.com/wg.fcgi?css=1&site=br&url=%2Fplayers%2F{}%2F{}&div=div_{}_standard"
-    standard_stat_xpath = "//tr[@id='{}_standard.2021']/td[@data-stat='{}']/text()"
+    standard_stat_xpath = "string(//tr[@id='{}_standard.2021']/td[@data-stat='{}'])"
 
     site = main_player_page.format(player_key[0], player_key, stat_type)
     page = requests.get(site, headers)
     tree = html.fromstring(page.text)
     value = tree.xpath(standard_stat_xpath.format(stat_type, stat_name))
     if len(value) > 0:
-        return float(value[0])
+        return float(value)
 
     return 0
 
