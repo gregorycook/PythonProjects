@@ -262,7 +262,7 @@ def get_team_tables(new_stats, old_stats):
             war_column_class = "normal"
             if war == high_war:
                 war_column_class = "bold"
-            player_html = "<a href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(player[1][0].lower(),  player_br[player[1]], player[2])
+            player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(player[1][0].lower(),  player_br[player[1]], player[2])
             row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}'>{:.1f} ({:.1f})</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war, war - old_war)
             table = table + row
 
@@ -430,9 +430,6 @@ def get_other_table(stats):
             "Title": "High Player WAR"
         }
     }
-
-    wins = stats["Mariners"]["Wins"]
-    losses = stats["Mariners"]["Losses"]
 
     # Best Kyle
     lewis_war = stats["Lewis"]["WAR"]

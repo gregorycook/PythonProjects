@@ -53,7 +53,7 @@
             <TeamTables/>
             <div style='grid-column: 1 / span 2;'>
                 <p class='title'>
-                    <a href="https://www.baseball-reference.com/teams/SEA/2021.shtml">Mariners</a> Team Record and Predictions
+                    <a href="https://www.baseball-reference.com/teams/SEA/2021.shtml" target="_blank">Mariners</a> Team Record and Predictions
                 </p>
                 <RecordTable/></div>
             <div style='grid-column: 1 / span 2;'>
