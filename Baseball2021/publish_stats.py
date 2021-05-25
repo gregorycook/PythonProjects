@@ -267,7 +267,9 @@ def get_team_tables(new_stats, old_stats):
             table = table + row
 
         new_stats["Mariners"][team] = total_war
-        table = table + "</table>\r\n<p/>Total War: {:.1f} ({:.1f})<p/></div>".format(total_war, total_war - old_stats["Mariners"][team])
+        war_delta = total_war - old_stats["Mariners"][team]
+        war_delta_text = "" if war_difference = 0 else "({:.1f})".format(war_delta)
+        table = table + "</table>\r\n<p/>Total War: {:.1f} {}<p/></div>".format(total_war, war_delta_text)
         team_tables.append(table)
 
     return "<p/>".join(team_tables)
