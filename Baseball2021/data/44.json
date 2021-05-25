@@ -5,7 +5,7 @@
 	},
 	"Gonzales": {
 		"ERA": 5.4,
-		"WAR": 0.0
+		"WAR": 0.1
 	},
 	"Paxton": {
 		"Starts": 1.0,
@@ -71,7 +71,7 @@
 		"Losses": 23,
 		"RunsScored": 169.0,
 		"RunsAllowed": 197.0,
-		"Hans": 2.4,
+		"Hans": 2.5000000000000006,
 		"Gregory": 2.8000000000000004,
 		"ProjectedWins": 71.77768786825806
 	}
