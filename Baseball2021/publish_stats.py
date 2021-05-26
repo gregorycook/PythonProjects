@@ -82,6 +82,15 @@ def get_value_stat(player, stat_name, stat_type):
     return value
 
 
+def get_mariners_no_hit():
+    site = 'https://www.nonohitters.com/no-hitters-against-the-seattle-mariners/'
+    xpath = 'count(//table[@class="nonolist"]/tbody/tr/th[number(text())>0])'
+    page = requests.get(site, headers)
+    tree = html.fromstring(page.text)
+    value = tree.xpath(xpath)
+
+    return value - 5
+
 def get_pitcher_count():
     mariners_team_pitching_site = 'https://widgets.sports-reference.com/wg.fcgi?css=1&site=br&url=%2Fteams%2FSEA%2F2021.shtml&div=div_team_pitching'
     mariners_pitcher_count_xpath = "count(//table[@id='team_pitching']//tr[number(td[@data-stat='IP']/text()) > 0])"
@@ -194,6 +203,7 @@ def get_stat_dict():
 
     stat_dict["Mariners"] = {}
     stat_dict["Mariners"]["PitcherCount"] = get_pitcher_count()
+    stat_dict["Mariners"]["NoHitCount"] = get_mariners_no_hit()
     stat_dict["Mariners"]["Wins"], stat_dict["Mariners"]["Losses"] = get_mariners_record()
     stat_dict["Mariners"]["RunsScored"], stat_dict["Mariners"]["RunsAllowed"] = get_mariners_runs()
 
@@ -249,7 +259,7 @@ def get_team_tables(new_stats, old_stats):
     for team in teams:
         team_number = team_number + 1
         total_war = 0
-        table = "<div style='grid-column: {}; grid-row: 1;'><p class='team-text'>Team {}</p>\r\n<table class='team_table'>\r\n\t<thead><tr>\r\n\t\t<td>Pick</td>\r\n\t\t<td>Name</td>\r\n\t\t<td>WAR</td>\r\n\t</tr></thead>".format(str(team_number), team)
+        table = "<div style='grid-column: {}; grid-row: 1;'><p class='team-text'>Team {}</p>\r\n<table class='team_table'>\r\n\t<thead><tr>\r\n\t\t<td>Pick</td>\r\n\t\t<td>Name</td>\r\n\t\t<td>WAR</td>\r\n\t\t<td></td>\r\n\t</tr></thead>".format(str(team_number), team)
         high_war = -10
         for player in teams[team]:
             war = new_stats[player[1]]["WAR"]
@@ -265,12 +275,11 @@ def get_team_tables(new_stats, old_stats):
             if war == high_war:
                 war_column_class = "bold"
             player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(player[1][0].lower(),  player_br[player[1]], player[2])
-            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}'>{:.1f} {}</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war, war_delta_text)
+            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}' align='right'>{:.1f}</td><td>{}</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war, war_delta_text)
             table = table + row
 
         new_stats["Mariners"][team] = total_war
         war_delta = total_war - old_stats["Mariners"][team]
-        print(war_delta)
         war_delta_text = "" if war_delta == 0 else "({:.1f})".format(war_delta)
         table = table + "</table>\r\n<p/>Total War: {:.1f} {}<p/></div>".format(total_war, war_delta_text)
         team_tables.append(table)
@@ -368,6 +377,13 @@ def get_over_under_table(stats):
             "Over": "Hans",
             "Under": "Gregory",
             "Rounding": (0, 1)
+        },
+        "NoHit": {
+            "Title": "Mariners No Hit",
+            "Value": 3.5,
+            "Over": "Gregory",
+            "Under": "Hans",
+            "Rounding": (0, 1)
         }
     }
 
@@ -407,6 +423,9 @@ def get_over_under_table(stats):
     over_unders["OldHomers"]["Current"] = haniger_hrs + seager_hrs + murphy_hrs
     over_unders["OldHomers"]["Projected"] = 162 / (wins + losses) * (
                 haniger_hrs + seager_hrs + murphy_hrs)
+
+    over_unders["NoHit"]["Current"] = stats["Mariners"]["NoHitCount"]
+    over_unders["NoHit"]["Projected"] = 162 / (wins + losses) * (over_unders["NoHit"]["Current"])
 
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
     rows = []
