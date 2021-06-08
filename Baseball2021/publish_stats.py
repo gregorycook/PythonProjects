@@ -379,7 +379,7 @@ def get_over_under_table(stats):
             "Rounding": (0, 1)
         },
         "NoHit": {
-            "Title": "Mariners No Hit",
+            "Title": "Mariners Are No Hit",
             "Value": 3.5,
             "Over": "Gregory",
             "Under": "Hans",
@@ -444,14 +444,14 @@ def get_over_under_table(stats):
 
 def get_other_table(stats):
     others = {
-        "Kyle": {
-            "Title": "Best Kyle"
+        "BestKyle": {
+            "Title": "Kyle"
         },
         "BestTeam": {
-            "Title": "High Team WAR"
+            "Title": "Team WAR"
         },
         "BestPlayer": {
-            "Title": "High Player WAR"
+            "Title": "Player WAR"
         }
     }
 
@@ -459,23 +459,23 @@ def get_other_table(stats):
     lewis_war = stats["Lewis"]["WAR"]
     seager_war = stats["Seager"]["WAR"]
     if lewis_war > seager_war:
-        others["Kyle"]["Thing"] = "Kyle Lewis"
-        others["Kyle"]["Relevant"] = "{:.1f} WAR".format(lewis_war)
-        others["Kyle"]["Winner"] = "Gregory"
+        others["BestKyle"]["Best"] = "Kyle Lewis"
+        others["BestKyle"]["Relevant"] = "{:.1f} WAR".format(lewis_war)
+        others["BestKyle"]["Winner"] = "Gregory"
     else:
-        others["Kyle"]["Thing"] = "Kyle Seager"
-        others["Kyle"]["Relevant"] = "{:.1f} WAR".format(seager_war)
-        others["Kyle"]["Winner"] = "Hans"
+        others["BestKyle"]["Best"] = "Kyle Seager"
+        others["BestKyle"]["Relevant"] = "{:.1f} WAR".format(seager_war)
+        others["BestKyle"]["Winner"] = "Hans"
 
     # Team WAR
     hans_team_war = stats["Mariners"]["Hans"]
     gregory_team_war = stats["Mariners"]["Gregory"]
     if gregory_team_war > hans_team_war:
-        others["BestTeam"]["Thing"] = "Team Gregory"
+        others["BestTeam"]["Best"] = "Team Gregory"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(gregory_team_war)
         others["BestTeam"]["Winner"] = "Gregory"
     else:
-        others["BestTeam"]["Thing"] = "Team Hans"
+        others["BestTeam"]["Best"] = "Team Hans"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(hans_team_war)
         others["BestTeam"]["Winner"] = "Hans"
 
@@ -494,7 +494,7 @@ def get_other_table(stats):
                 if team not in winners:
                     winners.append(team)
 
-    others["BestPlayer"]["Thing"] = ", ".join(best_players)
+    others["BestPlayer"]["Best"] = ", ".join(best_players)
     others["BestPlayer"]["Relevant"] = "{:.1f} WAR".format(global_high_war)
     others["BestPlayer"]["Winner"] = ", ".join(winners)
 
@@ -503,7 +503,7 @@ def get_other_table(stats):
     for other in others:
         item = others[other]
         row = row_template
-        row = row.format(item["Title"], item["Thing"], item["Relevant"], item["Winner"])
+        row = row.format(item["Title"], item["Best"], item["Relevant"], item["Winner"])
         rows.append(row)
 
     return others, "<tr>" + "</tr>\r\n<tr>".join(rows) + "</tr>"
