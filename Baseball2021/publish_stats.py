@@ -564,8 +564,8 @@ def upload_site():
     with open("ftp_creds.json") as ftp_creds_file:
         ftp_creds = json.load(ftp_creds_file)
         index_html_file = open("white_board.html", "rb")
+        ftp = FTP(ftp_creds["FTP_Site"])
         try:
-            ftp = FTP(ftp_creds["FTP_Site"])
             ftp.login(ftp_creds["FTP_UserName"], ftp_creds["FTP_Password"])
             ftp.cwd("cakewood.net")
             ftp.cwd("2021BaseballOverUnder")
