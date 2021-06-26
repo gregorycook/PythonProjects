@@ -1,0 +1,3 @@
+[submodule "Stockfish/Python-Easy-Chess-GUI"]
+	path = Stockfish/Python-Easy-Chess-GUI
+	url = https://github.com/fsmosca/Python-Easy-Chess-GUI.git
