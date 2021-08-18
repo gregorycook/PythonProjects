@@ -470,14 +470,21 @@ def get_other_table(stats):
     # Team WAR
     hans_team_war = stats["Mariners"]["Hans"]
     gregory_team_war = stats["Mariners"]["Gregory"]
+    print(gregory_team_war)
+    print(hans_team_war)
     if gregory_team_war > hans_team_war:
         others["BestTeam"]["Best"] = "Team Gregory"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(gregory_team_war)
         others["BestTeam"]["Winner"] = "Gregory"
-    else:
+    elif hans_team_war > gregory_team_war:
         others["BestTeam"]["Best"] = "Team Hans"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(hans_team_war)
         others["BestTeam"]["Winner"] = "Hans"
+    else:
+        others["BestTeam"]["Best"] = "Team Hans, Team Gregory"
+        others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(hans_team_war)
+        others["BestTeam"]["Winner"] = "Hans, Gregory"
+
 
     # Best Player(s)
     global_high_war = -10
@@ -522,9 +529,12 @@ def calculate_scores(over_unders, others):
             gregory += 1
 
     for item in others:
-        if others[item]["Winner"] == "Hans":
+        if "Hans" in others[item]["Winner"] and "Gregory" in others[item]["Winner"]:
+            hans += .5
+            gregory += .5
+        elif "Hans" in others[item]["Winner"]:
             hans += 1
-        else:
+        elif "Gregory" in others[item]["Winner"]:
             gregory += 1
 
     return hans, gregory
