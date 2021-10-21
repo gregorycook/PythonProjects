@@ -24,7 +24,7 @@ def generate():
     payload = {}
     payload["PublicKey"] = public_key
     response = requests.post(GENERATE_ENDPOINT, data=payload)
-
+    print(response)
     # save private key and user_id to file
     return
 

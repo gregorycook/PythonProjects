@@ -12,6 +12,7 @@ class Generate(Resource):
     def post(self):
         print(request)
         print(request.json)
+        print(request.data)
         return {'hello': 'world'}
 
 api.add_resource(Generate, '/generate')
