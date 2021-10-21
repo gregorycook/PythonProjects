@@ -5,7 +5,7 @@ from Crypto.PublicKey import RSA
 
 KEY_LENGTH = 2048
 
-GENERATE_ENDPOINT = "HTTP://192.168.43/generate"
+GENERATE_ENDPOINT = "HTTP://192.168.0.43:5000/generate"
 
 
 def usage():
@@ -22,7 +22,7 @@ def generate():
 
     # send public key to server and retrieve user_id
     payload = {}
-    payload["PublicKey": public_key]
+    payload["PublicKey"] = public_key
     response = requests.post(GENERATE_ENDPOINT, data=payload)
 
     # save private key and user_id to file
