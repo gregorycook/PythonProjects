@@ -8,13 +8,13 @@ import sqlite3
 app = Flask(__name__)
 api = Api(app)
 
-class Register(Resource):
+class Generate(Resource):
     def post(self):
         print(request)
         print(request.json)
         return {'hello': 'world'}
 
-api.add_resource(Register, '/register')
+api.add_resource(Generate, '/generate')
 
 if __name__ == '__main__':
     app.run(debug=True)
