@@ -609,13 +609,12 @@ def upload_site():
         index_html_file.close()
 
 
-def main(next_sleep_time):
+def main(run_time, next_sleep_minutes):
     # get today's stats
     new_stats = get_stat_dict()
 
     # load previous stats from file
     games_played = new_stats["Mariners"]["Wins"] + new_stats["Mariners"]["Losses"]
-    print(games_played)
     previous_games_played, old_stats = get_previous_data(games_played)
 
     html_base = None
@@ -625,8 +624,8 @@ def main(next_sleep_time):
     html_text = html_base
 
     # set last updated and other header stuff
-    html_text = html_text.replace("<LastUpdated/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<NextUpdateMinutes/>", str(next_sleep_time))
+    html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateTime/>", (run_time + datetime.timedelta(minutes=next_sleep_minutes)).strftime("%m/%d/%Y, %H:%M:%S"))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
@@ -663,8 +662,7 @@ if __name__ == "__main__":
         current_time = datetime.utcnow()
         current_hour = current_time.hour
         sleep_time = random.randint(180, 240)
-        if current_hour >= 12 and current_hour <= 18:
+        if 11 <= current_hour <= 19:
             sleep_time = random.randint(30, 60)
-        main(sleep_time)
-        print("Sleeping for {} minutes.".format(sleep_time))
+        main(current_time, sleep_time)
         time.sleep(60 * sleep_time)
