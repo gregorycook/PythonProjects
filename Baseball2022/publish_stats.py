@@ -588,9 +588,9 @@ def save_html(site_html):
 
 
 def upload_site():
-    with open("ftp_creds.json") as ftp_creds_file:
+    with open("/home/pi/Project/PythonProjects/Baseball2022/ftp_creds.json") as ftp_creds_file:
         ftp_creds = json.load(ftp_creds_file)
-        index_html_file = open("white_board.html", "rb")
+        index_html_file = open("/home/pi/Project/PythonProjects/Baseball2022/white_board.html", "rb")
         ftp = FTP(ftp_creds["FTP_Site"])
         try:
             ftp.login(ftp_creds["FTP_UserName"], ftp_creds["FTP_Password"])
@@ -616,7 +616,7 @@ def main():
     previous_games_played, old_stats = get_previous_data(games_played)
 
     html_base = None
-    with open('white_board.template', "r") as text_file:
+    with open('/home/pi/Project/PythonProjects/Baseball2022/white_board.template', "r") as text_file:
         html_base = text_file.readlines()
     html_base = ''.join(html_base)
     html_text = html_base
