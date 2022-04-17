@@ -573,6 +573,7 @@ def get_previous_data(gp):
     stats = None
     while attempt < 163 and stats is None:
         attempt += 1
+        print(attempt)
         previous_data_file_name = DATA_FILE_PATH.format(str(gp - attempt))
         if os.path.exists(previous_data_file_name):
             with open(previous_data_file_name) as previous_data_file:
