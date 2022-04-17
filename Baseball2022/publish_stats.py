@@ -7,6 +7,7 @@ import time
 import uuid
 
 from datetime import datetime
+from datetime import timedelta
 from ftplib import FTP
 from lxml import html
 
@@ -625,7 +626,7 @@ def main(run_time, next_sleep_minutes):
 
     # set last updated and other header stuff
     html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<NextUpdateTime/>", (run_time + datetime.timedelta(minutes=next_sleep_minutes)).strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateTime/>", (run_time + timedelta(minutes=next_sleep_minutes)).strftime("%m/%d/%Y, %H:%M:%S"))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
