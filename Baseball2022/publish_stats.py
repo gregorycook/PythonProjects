@@ -22,7 +22,9 @@ headers = {
 
 time.sleep(15)
 
-DATA_FILE_PATH = "/home/pi/Projects/PythonProjects/Baseball2022/data/{}.json"
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+DATA_FILE_PATH = os.path.join(script_path, 'data')
 
 # baseball reference keys
 player_br = {
@@ -561,7 +563,8 @@ def calculate_scores(over_unders, others):
 
 def save_stats(stats):
     gp = stats["Mariners"]["Wins"] + stats["Mariners"]["Losses"]
-    daily_data_file_name = DATA_FILE_PATH.format(str(gp))
+    daily_data_file_name = "{}.json".format(str(gp))
+    daily_data_file_name = os.path.join(DATA_FILE_PATH, daily_data_file_name)
     stats_json = json.dumps(stats)
     stats_file = open(daily_data_file_name, "w")
     stats_file.write(stats_json)
@@ -573,8 +576,8 @@ def get_previous_data(gp):
     stats = None
     while attempt < 163 and stats is None:
         attempt += 1
-        previous_data_file_name = DATA_FILE_PATH.format(str(gp - attempt))
-        print(previous_data_file_name)
+        file_name = "{}.json".format(str(gp-attempt))
+        previous_data_file_name = os.path.join(DATA_FILE_PATH, file_name)
         if os.path.exists(previous_data_file_name):
             with open(previous_data_file_name) as previous_data_file:
                 stats = json.load(previous_data_file)
@@ -582,15 +585,15 @@ def get_previous_data(gp):
 
 
 def save_html(site_html):
-    index_html_file = open("white_board.html", "w")
+    index_html_file = open(os.path.join(script_path, "white_board.html"), "w")
     index_html_file.write(site_html)
     index_html_file.close()
 
 
 def upload_site():
-    with open("/home/pi/Projects/PythonProjects/Baseball2022/ftp_creds.json") as ftp_creds_file:
+    with open(os.path.join(script_path, "ftp_creds.json")) as ftp_creds_file:
         ftp_creds = json.load(ftp_creds_file)
-        index_html_file = open("/home/pi/Projects/PythonProjects/Baseball2022/white_board.html", "rb")
+        index_html_file = open(os.path.join(script_path, "white_board.html"), "rb")
         ftp = FTP(ftp_creds["FTP_Site"])
         try:
             ftp.login(ftp_creds["FTP_UserName"], ftp_creds["FTP_Password"])
@@ -616,7 +619,7 @@ def main():
     previous_games_played, old_stats = get_previous_data(games_played)
 
     html_base = None
-    with open('/home/pi/Projects/PythonProjects/Baseball2022/white_board.template', "r") as text_file:
+    with open(os.path.join(script_path, 'white_board.template'), "r") as text_file:
         html_base = text_file.readlines()
     html_base = ''.join(html_base)
     html_text = html_base
