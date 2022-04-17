@@ -22,7 +22,7 @@ headers = {
 
 time.sleep(15)
 
-DATA_FILE_PATH = "data/{}.json"
+DATA_FILE_PATH = "/home/pi/Project/PythonProjects/Baseball2022/data/{}.json"
 
 # baseball reference keys
 player_br = {
