@@ -1,3 +1,5 @@
+#/usr/bin/env/python3
+
 import json
 import os
 import random
@@ -17,6 +19,8 @@ headers = {
     "Expires": "Thu, 01 Jan 1970 00:00:00 GMT",
     "SessionId": str(session_id)
 }
+
+time.sleep(15)
 
 DATA_FILE_PATH = "data/{}.json"
 
