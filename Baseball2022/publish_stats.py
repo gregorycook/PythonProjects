@@ -588,7 +588,7 @@ def save_html(site_html):
 
 
 def upload_site():
-    with open("ftp_creds.json") as ftp_creds_file:
+    with open("/home/pi/Project/PythonProjects/Baseball2022/ftp_creds.json") as ftp_creds_file:
         ftp_creds = json.load(ftp_creds_file)
         index_html_file = open("white_board.html", "rb")
         ftp = FTP(ftp_creds["FTP_Site"])
