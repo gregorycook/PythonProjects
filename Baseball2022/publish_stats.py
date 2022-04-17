@@ -612,6 +612,7 @@ def main():
 
     # load previous stats from file
     games_played = new_stats["Mariners"]["Wins"] + new_stats["Mariners"]["Losses"]
+    print(games_played)
     previous_games_played, old_stats = get_previous_data(games_played)
 
     html_base = None
