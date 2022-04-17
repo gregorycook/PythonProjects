@@ -47,6 +47,7 @@
     </head>
     <body>
         <div class = "title">Last Updated: <LastUpdated/> UTC</p></div>
+        <div class="title">Next update in <NextUpdateMinutes/> minutes</p></div>
         <div><GamesPlayed/> games played compared to previous <PreviousGamesPlayed/></p></div>
         <div class="title">Teams</div>
         <div class="grid-container">

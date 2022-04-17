@@ -609,7 +609,7 @@ def upload_site():
         index_html_file.close()
 
 
-def main():
+def main(next_sleep_time):
     # get today's stats
     new_stats = get_stat_dict()
 
@@ -626,6 +626,7 @@ def main():
 
     # set last updated and other header stuff
     html_text = html_text.replace("<LastUpdated/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateMinutes/>", str(next_sleep_time))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
@@ -659,8 +660,11 @@ def main():
 
 if __name__ == "__main__":
     while True:
-        print("Running: {}".format(datetime.utcnow()))
-        main()
+        current_time = datetime.utcnow()
+        current_hour = current_time.hour
         sleep_time = random.randint(180, 240)
+        if current_hour >= 12 and current_hour <= 18:
+            sleep_time = random.randint(30, 60)
+        main(sleep_time)
         print("Sleeping for {} minutes.".format(sleep_time))
         time.sleep(60 * sleep_time)
