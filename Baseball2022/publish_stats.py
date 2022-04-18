@@ -610,7 +610,7 @@ def upload_site():
         index_html_file.close()
 
 
-def main(run_time, next_sleep_minutes):
+def main(run_time, sleep_seconds):
     # get today's stats
     new_stats = get_stat_dict()
 
@@ -626,7 +626,7 @@ def main(run_time, next_sleep_minutes):
 
     # set last updated and other header stuff
     html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<NextUpdateTime/>", (run_time + timedelta(minutes=next_sleep_minutes)).strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateTime/>", (run_time + timedelta(seconds=sleep_seconds)).strftime("%m/%d/%Y, %H:%M:%S"))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
@@ -662,8 +662,10 @@ if __name__ == "__main__":
     while True:
         current_time = datetime.utcnow()
         current_hour = current_time.hour
-        sleep_time = random.randint(180, 240)
-        if 11 <= current_hour <= 19:
-            sleep_time = random.randint(30, 60)
+        # 3 to 4 hours
+        sleep_time = random.randint(60*180, 60*240)
+        if 11 <= current_hour <= 17:
+            # 30 minutes to an hour
+            sleep_time = random.randint(60*30, 60*60)
         main(current_time, sleep_time)
-        time.sleep(60 * sleep_time)
+        time.sleep(sleep_time)
