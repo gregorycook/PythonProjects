@@ -258,7 +258,7 @@ def get_stat_dict():
 
     # H8
     stat_dict["Castillo"] = {}
-    stat_dict["Castillo"]["WAR"] = get_value_stat("Castillo", "WAR", "batting")
+    stat_dict["Castillo"]["WAR"] = get_value_stat("Castillo", "WAR_pitch", "pitching")
 
     # H9
     stat_dict["Moore"] = {}
