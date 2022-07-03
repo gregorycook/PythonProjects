@@ -277,6 +277,7 @@ def get_stat_dict():
     stat_dict["Mariners"]["RunsScored"], stat_dict["Mariners"]["RunsAllowed"] = get_mariners_runs()
 
     # Other players
+    stat_dict["Upton"] = {}
     stat_dict["Upton"]["HRs"] = get_standard_stat("Upton", "HR", "batting")
 
     return stat_dict
