@@ -49,7 +49,8 @@ player_br = {
     "Lewis": "lewisky01.shtml",
     "Castillo": "castidi01.shtml",
     "Moore": "mooredy01.shtml",
-    "Upton": "uptonju01.shtml"
+    "Upton": "uptonju01.shtml",
+    "Santana": "santaca01.shtml"
 }
 
 teams = {
@@ -280,6 +281,9 @@ def get_stat_dict():
     stat_dict["Upton"] = {}
     stat_dict["Upton"]["HRs"] = get_standard_stat("Upton", "HR", "batting")
 
+    stat_dict["Santana"] = {}
+    stat_dict["Santana"]["HRs"] = get_standard_stat("Santana", "HR", "batting")
+
     return stat_dict
 
 
@@ -461,9 +465,11 @@ def get_over_under_table(stats):
     murphy_hrs = stats["Murphy"]["HRs"]
     suarez_hrs = stats["Suarez"]["HRs"]
     upton_hrs = stats["Upton"]["HRs"]
-    over_unders["OldHomers"]["Current"] = haniger_hrs + frazier_hrs + murphy_hrs + suarez_hrs + upton_hrs
+    santana_hrs = stats["Santana"]["HRs"] - 4
+    print(santana_hrs)
+    over_unders["OldHomers"]["Current"] = haniger_hrs + frazier_hrs + murphy_hrs + suarez_hrs + upton_hrs + santana_hrs
     over_unders["OldHomers"]["Projected"] = 162 / (wins + losses) * (
-                haniger_hrs + frazier_hrs + murphy_hrs + suarez_hrs + upton_hrs)
+                haniger_hrs + frazier_hrs + murphy_hrs + suarez_hrs + upton_hrs + santana_hrs)
 
     rodriguez_hrs = stats["Rodriguez"]["HRs"]
     kelenic_hrs = stats["Kelenic"]["HRs"]
