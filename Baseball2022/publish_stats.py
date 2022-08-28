@@ -673,20 +673,13 @@ def main(run_time, sleep_seconds):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) == 2:
+    while True:
         current_time = datetime.utcnow()
         current_hour = current_time.hour
         # 3 to 4 hours
         sleep_time = random.randint(60*180, 60*240)
+        if 11 <= current_hour <= 17:
+            # 30 minutes to an hour
+            sleep_time = random.randint(60*30, 60*60)
         main(current_time, sleep_time)
-    else:
-        while True:
-            current_time = datetime.utcnow()
-            current_hour = current_time.hour
-            # 3 to 4 hours
-            sleep_time = random.randint(60*180, 60*240)
-            if 11 <= current_hour <= 17:
-                # 30 minutes to an hour
-                sleep_time = random.randint(60*30, 60*60)
-            main(current_time, sleep_time)
-            time.sleep(sleep_time)
+        time.sleep(sleep_time)
