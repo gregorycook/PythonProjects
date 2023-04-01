@@ -1,0 +1,89 @@
+{
+	"Crawford": {
+		"WAR": 0
+	},
+	"Gilbert": {
+		"WAR": 0
+	},
+	"Kirby": {
+		"WAR": 0
+	},
+	"Ray": {
+		"WAR": 0
+	},
+	"Flexen": {
+		"WAR": 0
+	},
+	"Brash": {
+		"WAR": 0
+	},
+	"Murphy": {
+		"HRs": 0,
+		"WAR": 0
+	},
+	"Pollock": {
+		"HRs": 0,
+		"WAR": 0
+	},
+	"Raleigh": {
+		"WAR": 0
+	},
+	"Sewald": {
+		"WAR": 0
+	},
+	"Rodriguez": {
+		"WAR": 0,
+		"OPS": 0,
+		"HRs": 0
+	},
+	"France": {
+		"WAR": 0
+	},
+	"Hernandez": {
+		"WAR": 0
+	},
+	"Wong": {
+		"HRs": 0,
+		"WAR": 0
+	},
+	"Clase": {
+		"WAR": 0
+	},
+	"Kelenic": {
+		"OPS": 0,
+		"WAR": 0,
+		"HRs": 0
+	},
+	"Gonzales": {
+		"ERA": 0,
+		"WAR": 0
+	},
+	"Castillo": {
+		"WAR": 0
+	},
+	"Haggerty": {
+		"WAR": 0
+	},
+	"Moore": {
+		"WAR": 0
+	},
+	"Suarez": {
+		"WAR": 0,
+		"HRs": 0
+	},
+	"Munoz": {
+		"WAR": 0,
+		"HRs": 0
+	},
+	"Mariners": {
+		"PitcherCount": 0,
+		"NoHitCount": 0,
+		"Wins": 0,
+		"Losses": 0,
+		"RunsScored": 0,
+		"RunsAllowed": 0,
+		"Gregory": 0,
+		"Hans": 0,
+		"ProjectedWins": 0
+	}
+}
