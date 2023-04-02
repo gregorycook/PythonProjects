@@ -63,7 +63,7 @@ teams = {
         (3, "Kirby", "George Kirby"),
         (6, "Wong", "Kolten Wong"),
         (7, "Crawford", "J.P. Crawford"),
-        (10, "Suarez", "Eugenio Suarez"),
+        (10, "Suarez", "Eugenio Suárez"),
         (11, "Haggerty", "Sam Haggerty"),
         (14, "Kelenic", "Jarred Kelenic"),
         (15, "Sewald", "Paul Sewald"),
@@ -481,7 +481,7 @@ def get_over_under_table(stats):
     over_unders["YoungHomers"]["Current"] = young_guy_homers
     over_unders["YoungHomers"]["Projected"] = 162 / (wins + losses) * young_guy_homers
 
-    combined_era = (stats["Gilbert"]["EarnedRuns"] + stats["Kirby"]["EarnedRuns"]) / (9 * (stats["Gilbert"]["Innings"] + stats["Kirby"]["EarnedRuns"] + 1))
+    combined_era = 9*(stats["Gilbert"]["EarnedRuns"] + stats["Kirby"]["EarnedRuns"]) / ((stats["Gilbert"]["Innings"] + stats["Kirby"]["Innings"]))
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
 
