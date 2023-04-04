@@ -697,7 +697,7 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<Gregory/>", str(gregory))
 
     save_html(html_text)
-    # upload_site()
+    upload_site()
 
     # saving these at the end because they get updated a couple of times throughout the process
     save_stats(new_stats)
