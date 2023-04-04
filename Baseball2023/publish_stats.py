@@ -103,8 +103,8 @@ def get_standard_stat(player, stat_name, stat_type):
 
 def get_value_stat(player, stat_name, stat_type):
     player_key = player_br[player]
-    player_value_site = "https://widgets.sports-reference.com/wg.fcgi?css=1&site=br&url=%2Fplayers%2F{}%2F{}&div=div_{}_value"
-    value_stat_xpath = '//tr[@id="{}_value.2023"]/td[@data-stat="{}"]/text()'
+    player_value_site = "https://www.baseball-reference.com/players/{}/{}"
+    value_stat_xpath = '//tr[@id="{}_value.2022"]/td[@data-stat="{}"]/text()'
 
     site = player_value_site.format(player_key[0], player_key, stat_type)
     page = requests.get(site, headers)
@@ -201,59 +201,71 @@ def get_stat_dict():
     # G2
     stat_dict["Castillo"] = {}
     stat_dict["Castillo"]["WAR"] = get_value_stat("Castillo", "WAR_pitch", "pitching")
+    time.sleep(15)
 
     # G3
     stat_dict["Kirby"] = {}
     stat_dict["Kirby"]["WAR"] = get_value_stat("Kirby", "WAR_pitch", "pitching")
     stat_dict["Kirby"]["EarnedRuns"] = get_standard_stat("Kirby", "ER", "pitching")
     stat_dict["Kirby"]["Innings"] = get_standard_stat("Kirby", "IP", "pitching")
+    time.sleep(15)
 
     # G6
     stat_dict["Wong"] = {}
     stat_dict["Wong"]["WAR"] = get_value_stat("Wong", "WAR", "batting")
+    time.sleep(15)
 
     # G7
     stat_dict["Crawford"] = {}
     stat_dict["Crawford"]["WAR"] = get_value_stat("Crawford", "WAR", "batting")
+    time.sleep(15)
 
     # G10
     stat_dict["Suarez"] = {}
     stat_dict["Suarez"]["WAR"] = get_value_stat("Suarez", "WAR", "batting")
     stat_dict["Suarez"]["HRs"] = get_standard_stat("Suarez", "HR", "batting")
+    time.sleep(15)
 
     # G11
     stat_dict["Haggerty"] = {}
     stat_dict["Haggerty"]["WAR"] = get_value_stat("Haggerty", "WAR", "batting")
+    time.sleep(15)
 
     # G14
     stat_dict["Kelenic"] = {}
     stat_dict["Kelenic"]["WAR"] = get_value_stat("Kelenic", "WAR", "batting")
     stat_dict["Kelenic"]["HRs"] = get_standard_stat("Kelenic", "HR", "batting")
     stat_dict["Kelenic"]["OPS"] = get_standard_stat("Kelenic", "onbase_plus_slugging", "batting")
+    time.sleep(15)
 
     # G15
     stat_dict["Sewald"] = {}
     stat_dict["Sewald"]["WAR"] = get_value_stat("Sewald", "WAR_pitch", "pitching")
     stat_dict["Sewald"]["Saves"] = get_standard_stat("Sewald", "SV", "pitching")
+    time.sleep(15)
 
     # G18
     stat_dict["Flexen"] = {}
     stat_dict["Flexen"]["WAR"] = get_value_stat("Flexen", "WAR_pitch", "pitching")
+    time.sleep(15)
 
     # G19
     stat_dict["Clase"] = {}
     stat_dict["Clase"]["WAR"] = get_value_stat("Clase", "WAR", "batting")
     stat_dict["Clase"]["HRs"] = get_standard_stat("Clase", "HR", "batting")
+    time.sleep(15)
 
     # H1
     stat_dict["Rodriguez"] = {}
     stat_dict["Rodriguez"]["WAR"] = get_value_stat("Rodriguez", "WAR", "batting")
     stat_dict["Rodriguez"]["OPS"] = get_standard_stat("Rodriguez", "onbase_plus_slugging", "batting")
     stat_dict["Rodriguez"]["HRs"] = get_standard_stat("Rodriguez", "HR", "batting")
+    time.sleep(15)
 
     # H4
     stat_dict["France"] = {}
     stat_dict["France"]["WAR"] = get_value_stat("France", "WAR", "batting")
+    time.sleep(15)
 
     # H5
     stat_dict["Gilbert"] = {}
@@ -261,37 +273,45 @@ def get_stat_dict():
     stat_dict["Gilbert"]["ERA"] = get_standard_stat("Gilbert", "earned_run_avg", "pitching")
     stat_dict["Gilbert"]["EarnedRuns"] = get_standard_stat("Gilbert", "ER", "pitching")
     stat_dict["Gilbert"]["Innings"] = get_standard_stat("Gilbert", "IP", "pitching")
+    time.sleep(15)
 
     # H8
     stat_dict["Raleigh"] = {}
     stat_dict["Raleigh"]["WAR"] = get_value_stat("Raleigh", "WAR", "batting")
+    time.sleep(15)
 
     # H9
     stat_dict["Hernandez"] = {}
     stat_dict["Hernandez"]["WAR"] = get_value_stat("Hernandez", "WAR", "batting")
+    time.sleep(15)
 
     # H12
     stat_dict["Ray"] = {}
     stat_dict["Ray"]["WAR"] = get_value_stat("Ray", "WAR_pitch", "pitching")
+    time.sleep(15)
 
     # H13
     stat_dict["Munoz"] = {}
     stat_dict["Munoz"]["WAR"] = get_value_stat("Munoz", "WAR_pitch", "pitching")
     stat_dict["Munoz"]["Saves"] = get_standard_stat("Munoz", "SV", "pitching")
+    time.sleep(15)
 
     # H16
     stat_dict["Murphy"] = {}
     stat_dict["Murphy"]["HRs"] = get_standard_stat("Murphy", "HR", "batting")
     stat_dict["Murphy"]["WAR"] = get_value_stat("Murphy", "WAR", "batting")
+    time.sleep(15)
 
     # H17
     stat_dict["Pollock"] = {}
     stat_dict["Pollock"]["WAR"] = get_value_stat("Pollock", "WAR", "batting")
+    time.sleep(15)
 
     # H20
     stat_dict["Gonzales"] = {}
     stat_dict["Gonzales"]["ERA"] = get_standard_stat("Gonzales", "earned_run_avg", "pitching")
     stat_dict["Gonzales"]["WAR"] = get_value_stat("Gonzales", "WAR_pitch", "pitching")
+    time.sleep(15)
 
     stat_dict["Mariners"] = {}
     # stat_dict["Mariners"]["PitcherCount"] = get_pitcher_count()
@@ -547,6 +567,7 @@ def get_other_table(stats):
                 if team not in winners:
                     winners.append(team)
 
+
     others["BestPlayer"]["Best"] = ", ".join(best_players)
     others["BestPlayer"]["Relevant"] = "{:.1f} WAR".format(global_high_war)
     others["BestPlayer"]["Winner"] = ", ".join(winners)
@@ -676,7 +697,7 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<Gregory/>", str(gregory))
 
     save_html(html_text)
-    upload_site()
+    # upload_site()
 
     # saving these at the end because they get updated a couple of times throughout the process
     save_stats(new_stats)
@@ -684,13 +705,13 @@ def main(run_time, sleep_seconds):
 
 if __name__ == "__main__":
 
-    while True:
-        current_time = datetime.utcnow()
-        current_hour = current_time.hour
-        # 3 to 4 hours
-        sleep_time = random.randint(60*180, 60*240)
-        if 11 <= current_hour <= 17:
-            # 30 minutes to an hour
-            sleep_time = random.randint(60*30, 60*60)
-        main(current_time, sleep_time)
-        time.sleep(sleep_time)
+    # while True:
+    current_time = datetime.utcnow()
+    current_hour = current_time.hour
+    # 3 to 4 hours
+    sleep_time = random.randint(60*180, 60*240)
+    if 11 <= current_hour <= 17:
+        # 30 minutes to an hour
+        sleep_time = random.randint(60*30, 60*60)
+    main(current_time, sleep_time)
+    # time.sleep(sleep_time)
