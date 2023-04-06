@@ -30,31 +30,34 @@ script_path = os.path.dirname(os.path.realpath(__file__))
 
 DATA_FILE_PATH = os.path.join(script_path, 'data')
 
+BASE_PITCHER_STATS = {'SV': 0, 'IP': 0.0, 'ER': 0, 'WAR': 0.0, 'ERA': 0.00}
+BASE_HITTER_STATS = {'HR': 0.0, 'OPS': 0.0, 'WAR': 0.0}
+
 # baseball reference keys
 player_br = {
-    "Crawford": "crawfjp01.shtml",
-    "Sewald": "sewalpa01.shtml",
-    "Gilbert": "gilbelo01.shtml",
-    "Ray": "rayro02.shtml",
-    "Kirby": "kirbyge01.shtml",
-    "Castillo": "castilu02.shtml",
-    "Wong": "wongko01.shtml",
-    "Haggerty": "haggesa01.shtml",
-    "Clase": "clasejo01.shtml",
-    "Flexen": "flexech01.shtml",
-    "Murphy": "murphto04.shtml",
-    "Raleigh": "raleica01.shtml",
-    "Rodriguez": "rodriju01.shtml",
-    "Suarez": "suareeu01.shtml",
-    "France": "francty01.shtml",
-    "Kelenic": "kelenja01.shtml",
-    "Gonzales": "gonzama02.shtml",
-    "Hernandez": "hernate01.shtml",
-    "Munoz": "munozan01.shtml",
-    "Pollock": "polloaj01.shtml",
-    "La Stella": "lasteto01.shtml",
-    "Moore": "mooredy01.shtml",
-    "Trammell": "trammta01.shtml"
+    "Crawford": {'Fragment': "crawfjp01.shtml", 'type': "batting"},
+    "Sewald": {'Fragment': "sewalpa01.shtml", 'type': "pitching"},
+    "Gilbert": {'Fragment': "gilbelo01.shtml", 'type': "pitching"},
+    "Ray": {'Fragment': "rayro02.shtml", 'type': "pitching"},
+    "Kirby": {'Fragment': "kirbyge01.shtml", 'type': "pitching"},
+    "Castillo": {'Fragment': "castilu02.shtml", 'type': "pitching"},
+    "Wong": {'Fragment': "wongko01.shtml", 'type': "batting"},
+    "Haggerty": {'Fragment': "haggesa01.shtml", 'type': "batting"},
+    "Clase": {'Fragment': "clasejo01.shtml", 'type': "batting", "Name": "Johatan Clase"},
+    "Flexen": {'Fragment': "flexech01.shtml", 'type': "pitching"},
+    "Murphy": {'Fragment': "murphto04.shtml", 'type': "batting"},
+    "Raleigh": {'Fragment': "raleica01.shtml", 'type': "batting"},
+    "Rodriguez": {'Fragment': "rodriju01.shtml", 'type': "batting"},
+    "Suarez": {'Fragment': "suareeu01.shtml", 'type': "batting"},
+    "France": {'Fragment': "francty01.shtml", 'type': "batting"},
+    "Kelenic": {'Fragment': "kelenja01.shtml", 'type': "batting"},
+    "Gonzales": {'Fragment': "gonzama02.shtml", 'type': "pitching"},
+    "Hernandez": {'Fragment': "hernate01.shtml", 'type': "batting"},
+    "Munoz": {'Fragment': "munozan01.shtml", 'type': "pitching"},
+    "Pollock": {'Fragment': "polloaj01.shtml", 'type': "batting"},
+    "La Stella": {'Fragment': "lasteto01.shtml", 'type': "batting"},
+    "Moore": {'Fragment': "mooredy01.shtml", 'type': "batting"},
+    "Trammell": {'Fragment': "trammta01.shtml", 'type': "batting"},
 }
 
 teams = {
@@ -85,58 +88,17 @@ teams = {
 }
 
 
-def get_standard_stat(player, stat_name, stat_type):
-    player_key = player_br[player]
-    # main_player_page = "https://widgets.sports-reference.com/wg.fcgi?css=1&site=br&url=%2Fplayers%2F{}%2F{}&div=div_{}_standard"
-    main_player_page = "https://www.baseball-reference.com/players/{}/{}"
-    standard_stat_xpath = "string(//tr[@id='{}_standard.2023']/td[@data-stat='{}'])"
-
-    site = main_player_page.format(player_key[0], player_key)
-    page = requests.get(site, headers)
-    tree = html.fromstring(page.text)
-    value = tree.xpath(standard_stat_xpath.format(stat_type, stat_name))
-    if len(value) > 0:
-        return float(value)
-
-    return 0
-
-
-def get_value_stat(player, stat_name, stat_type):
-    player_key = player_br[player]
-    player_value_site = "https://www.baseball-reference.com/players/{}/{}"
-    value_stat_xpath = '//tr[@id="{}_value.2022"]/td[@data-stat="{}"]/text()'
-
-    site = player_value_site.format(player_key[0], player_key, stat_type)
-    page = requests.get(site, headers)
-    thing = []
-    try:
-        table_index = str.index(page.text, "<table")
-        end_table_index = str.index(page.text, "</table")
-        end_table_index = str.index(page.text, ">", end_table_index)
-        table_element = page.text[table_index:end_table_index + 1]
-        table_element = table_element.replace("&rsquo;", "")
-        tree = html.fromstring(table_element)
-        specific_xpath = value_stat_xpath.format(stat_type, stat_name)
-        thing = tree.xpath(specific_xpath)
-    except Exception as e:
-        pass
-    value = 0
-    if len(thing) > 0:
-        value = float(thing[0])
-
-    return value
-
-
-def accumulate_group_stat(guys, stats, local_name, stat_function, stat_name, stat_category):
+def accumulate_group_stat(guys, stats, local_name):
     total = 0
+    tool_tip = ''
     for guy in guys:
-        if guy not in stats:
-            stats[guy] = {}
-        if local_name not in stats[guy]:
-            stats[guy][local_name] =  stat_function(guy, stat_name, stat_category)
-        total = total + stats[guy][local_name];
+        stat = stats[guy][local_name]
+        total = total + stat
+        if stat > 0:
+            player = player_br[guy]["Name"]
+            tool_tip = "{}<br>{}: {}".format(tool_tip, player, stat)
 
-    return total
+    return total, tool_tip
 
 
 def get_mariners_no_hit():
@@ -160,164 +122,114 @@ def get_pitcher_count():
     return value
 
 
-def get_mariners_record():
-    record_site = "https://www.baseball-reference.com/"
-    record_xpath_wins = "//table[@id='standings_AL']//tr[th/@csk='SEA']//td[@data-stat='W']/text()"
-    record_xpath_losses = "//table[@id='standings_AL']//tr[th/@csk='SEA']//td[@data-stat='L']/text()"
-
-    # lookup wins/losses
-    page = requests.get(record_site, headers)
-    tree = html.fromstring(page.text)
-    wins = int(tree.xpath(record_xpath_wins)[0])
-    losses = int(tree.xpath(record_xpath_losses)[0])
-
-    return wins, losses
-
-
-def get_mariners_runs():
-    baseball_reference_mariners_site = "https://www.baseball-reference.com/teams/SEA/2023.shtml"
-    runs_scored_allowed_xpath = "//div[@data-template='Partials/Teams/Summary']//p[a/strong/text()='Pythagorean W-L:']/text()"
-
-    # lookup runs scored/allowed
-    page = requests.get(baseball_reference_mariners_site, headers)
-    tree = html.fromstring(page.text)
-    summary_text = tree.xpath(runs_scored_allowed_xpath)
-
-    runs_scored = 1
-    runs_allowed = 1
-    if len(summary_text):
-        summary_list = summary_text[-1].split(",")
-        runs_scored_text = summary_list[1]
-        runs_allowed_text = summary_list[2]
-        runs_scored = float(runs_scored_text[:runs_scored_text.index('Runs')])
-        runs_allowed = float(runs_allowed_text[:runs_allowed_text.index('Runs')])
-
-    return runs_scored, runs_allowed
-
-
 def get_stat_dict():
-    stat_dict = dict()
+    stat_dict = {'Mariners': {}}
 
-    # G2
-    stat_dict["Castillo"] = {}
-    stat_dict["Castillo"]["WAR"] = get_value_stat("Castillo", "WAR_pitch", "pitching")
-    time.sleep(15)
+    espn_page = 'https://www.espn.com/mlb/team/stats/_/name/sea'
+    page = requests.get(espn_page, headers)
+    start_index = page.text.index('{"app":')
+    end_index = page.text.index('"user":{}}') + 10
+    stats_json = page.text[start_index:end_index]
 
-    # G3
-    stat_dict["Kirby"] = {}
-    stat_dict["Kirby"]["WAR"] = get_value_stat("Kirby", "WAR_pitch", "pitching")
-    stat_dict["Kirby"]["EarnedRuns"] = get_standard_stat("Kirby", "ER", "pitching")
-    stat_dict["Kirby"]["Innings"] = get_standard_stat("Kirby", "IP", "pitching")
-    time.sleep(15)
+    y = json.loads(stats_json)
 
-    # G6
-    stat_dict["Wong"] = {}
-    stat_dict["Wong"]["WAR"] = get_value_stat("Wong", "WAR", "batting")
-    time.sleep(15)
+    # in this thing teamStats has runsScored and runsAllowed
+    # playerStats has everything else that we currently want
+    batting_stats = y['page']['content']['stats']
+    team_stats = batting_stats['teamStats']['team'][0]['stats']
+    for stat in team_stats:
+        if stat['name'] == 'runs':
+            stat_dict['Mariners']['RunsScored'] = int(stat['displayValue'])
 
-    # G7
-    stat_dict["Crawford"] = {}
-    stat_dict["Crawford"]["WAR"] = get_value_stat("Crawford", "WAR", "batting")
-    time.sleep(15)
+    opponent_stats = batting_stats['teamStats']['opponent'][0]['stats']
+    for stat in opponent_stats:
+        if stat['name'] == 'runs':
+            stat_dict['Mariners']['RunsAllowed'] = int(stat['displayValue'])
 
-    # G10
-    stat_dict["Suarez"] = {}
-    stat_dict["Suarez"]["WAR"] = get_value_stat("Suarez", "WAR", "batting")
-    stat_dict["Suarez"]["HRs"] = get_standard_stat("Suarez", "HR", "batting")
-    time.sleep(15)
+    player_stats = batting_stats['playerStats'][0]
 
-    # G11
-    stat_dict["Haggerty"] = {}
-    stat_dict["Haggerty"]["WAR"] = get_value_stat("Haggerty", "WAR", "batting")
-    time.sleep(15)
+    collect_batting = ['homeRuns', 'OPS', 'WARBR']
+    for player in player_stats:
+        name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
+        this_player_stats = {}
+        stat_dict[name] = this_player_stats
+        for stat in player['statGroups']['stats']:
+            if stat['name'] in collect_batting:
+                this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
-    # G14
-    stat_dict["Kelenic"] = {}
-    stat_dict["Kelenic"]["WAR"] = get_value_stat("Kelenic", "WAR", "batting")
-    stat_dict["Kelenic"]["HRs"] = get_standard_stat("Kelenic", "HR", "batting")
-    stat_dict["Kelenic"]["OPS"] = get_standard_stat("Kelenic", "onbase_plus_slugging", "batting")
-    time.sleep(15)
+    espn_page = 'https://www.espn.com/mlb/team/stats/_/type/pitching/name/sea'
+    page = requests.get(espn_page, headers)
+    start_index = page.text.index('{"app":')
+    end_index = page.text.index('"user":{}}') + 10
+    stats_json = page.text[start_index:end_index]
 
-    # G15
-    stat_dict["Sewald"] = {}
-    stat_dict["Sewald"]["WAR"] = get_value_stat("Sewald", "WAR_pitch", "pitching")
-    stat_dict["Sewald"]["Saves"] = get_standard_stat("Sewald", "SV", "pitching")
-    time.sleep(15)
+    y = json.loads(stats_json)
+    pitching_stats = y['page']['content']['stats']
+    player_stats = pitching_stats['playerStats'][0]
 
-    # G18
-    stat_dict["Flexen"] = {}
-    stat_dict["Flexen"]["WAR"] = get_value_stat("Flexen", "WAR_pitch", "pitching")
-    time.sleep(15)
+    collect_pitching = ['saves', 'innings', 'earnedRuns', 'WARBR', 'ERA']
+    for player in player_stats:
+        if player['athlete']['shortName'] != 'D. Castillo':
+            name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
+            this_player_stats = {}
+            stat_dict[name] = this_player_stats
+            print(player['athlete']['shortName'])
+            for stat in player['statGroups']['stats']:
+                if stat['name'] in collect_pitching:
+                    print("{} -- {}={}".format(name, stat['abbreviation'], stat['displayValue']))
+                    this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
-    # G19
-    stat_dict["Clase"] = {}
-    stat_dict["Clase"]["WAR"] = get_value_stat("Clase", "WAR", "batting")
-    stat_dict["Clase"]["HRs"] = get_standard_stat("Clase", "HR", "batting")
-    time.sleep(15)
+    espn_page = 'https://www.espn.com/mlb/standings'
+    page = requests.get(espn_page, headers)
+    start_index = page.text.index('{"app":')
+    end_index = page.text.index('"user":{}}') + 10
+    stats_json = page.text[start_index:end_index]
+    y = json.loads(stats_json)
 
-    # H1
-    stat_dict["Rodriguez"] = {}
-    stat_dict["Rodriguez"]["WAR"] = get_value_stat("Rodriguez", "WAR", "batting")
-    stat_dict["Rodriguez"]["OPS"] = get_standard_stat("Rodriguez", "onbase_plus_slugging", "batting")
-    stat_dict["Rodriguez"]["HRs"] = get_standard_stat("Rodriguez", "HR", "batting")
-    time.sleep(15)
+    standings_json = y['page']['content']['standings']['groups']
+    index = 0
+    losses_index = -1
+    wins_index = -1
+    for header in standings_json['headers']:
+        if header == 'losses':
+            losses_index = index
+        elif header == 'wins':
+            wins_index = index
+        index = index + 1
 
-    # H4
-    stat_dict["France"] = {}
-    stat_dict["France"]["WAR"] = get_value_stat("France", "WAR", "batting")
-    time.sleep(15)
+    for group in standings_json['groups']:
+        if group['name'] == 'American League':
+            for division in group['children']:
+                if division['name'] == 'West':
+                    for place in division['standings']:
+                        if place['team']['abbrev'] == 'SEA':
+                            stat_dict['Mariners']['Wins'] = int(place['stats'][wins_index])
+                            stat_dict['Mariners']['Losses'] = int(place['stats'][losses_index])
 
-    # H5
-    stat_dict["Gilbert"] = {}
-    stat_dict["Gilbert"]["WAR"] = get_value_stat("Gilbert", "WAR_pitch", "pitching")
-    stat_dict["Gilbert"]["ERA"] = get_standard_stat("Gilbert", "earned_run_avg", "pitching")
-    stat_dict["Gilbert"]["EarnedRuns"] = get_standard_stat("Gilbert", "ER", "pitching")
-    stat_dict["Gilbert"]["Innings"] = get_standard_stat("Gilbert", "IP", "pitching")
-    time.sleep(15)
+    for player in player_br:
+        if player not in stat_dict:
+            if player_br[player]['type'] == 'batting':
+                stat_dict[player] = BASE_HITTER_STATS
+            elif player_br[player]['type'] == 'pitching':
+                stat_dict[player] = BASE_PITCHER_STATS
 
-    # H8
-    stat_dict["Raleigh"] = {}
-    stat_dict["Raleigh"]["WAR"] = get_value_stat("Raleigh", "WAR", "batting")
-    time.sleep(15)
+    main_player_page = "https://www.baseball-reference.com/players/{}/{}"
+    standard_stat_xpath = "string(//tr[@id='{}_{}.2023']/td[@data-stat='{}'])"
 
-    # H9
-    stat_dict["Hernandez"] = {}
-    stat_dict["Hernandez"]["WAR"] = get_value_stat("Hernandez", "WAR", "batting")
-    time.sleep(15)
+    for player_key in player_br:
+        player = player_br[player_key]
+        page_fragment = player['Fragment']
 
-    # H12
-    stat_dict["Ray"] = {}
-    stat_dict["Ray"]["WAR"] = get_value_stat("Ray", "WAR_pitch", "pitching")
-    time.sleep(15)
+        site = main_player_page.format(page_fragment[0], page_fragment)
+        page = requests.get(site, headers)
+        tree = html.fromstring(page.text)
 
-    # H13
-    stat_dict["Munoz"] = {}
-    stat_dict["Munoz"]["WAR"] = get_value_stat("Munoz", "WAR_pitch", "pitching")
-    stat_dict["Munoz"]["Saves"] = get_standard_stat("Munoz", "SV", "pitching")
-    time.sleep(15)
+        # grab player's name from page, all weird characters included!
+        name = tree.xpath('//div[@id="info"]//span/text()')
+        if len(name) > 0:
+            player['Name'] = name[0]
 
-    # H16
-    stat_dict["Murphy"] = {}
-    stat_dict["Murphy"]["HRs"] = get_standard_stat("Murphy", "HR", "batting")
-    stat_dict["Murphy"]["WAR"] = get_value_stat("Murphy", "WAR", "batting")
-    time.sleep(15)
-
-    # H17
-    stat_dict["Pollock"] = {}
-    stat_dict["Pollock"]["WAR"] = get_value_stat("Pollock", "WAR", "batting")
-    time.sleep(15)
-
-    # H20
-    stat_dict["Gonzales"] = {}
-    stat_dict["Gonzales"]["ERA"] = get_standard_stat("Gonzales", "earned_run_avg", "pitching")
-    stat_dict["Gonzales"]["WAR"] = get_value_stat("Gonzales", "WAR_pitch", "pitching")
-    time.sleep(15)
-
-    stat_dict["Mariners"] = {}
-    # stat_dict["Mariners"]["PitcherCount"] = get_pitcher_count()
-    # stat_dict["Mariners"]["NoHitCount"] = get_mariners_no_hit()
-    stat_dict["Mariners"]["Wins"], stat_dict["Mariners"]["Losses"] = get_mariners_record()
-    stat_dict["Mariners"]["RunsScored"], stat_dict["Mariners"]["RunsAllowed"] = get_mariners_runs()
+        time.sleep(10)
 
     return stat_dict
 
@@ -346,21 +258,26 @@ def get_team_tables(new_stats, old_stats):
         total_war = 0
         table = "<div style='grid-column: {}; grid-row: 1;'><p class='team-text'>Team {}</p>\r\n<table class='team_table'>\r\n\t<thead><tr>\r\n\t\t<td>Pick</td>\r\n\t\t<td>Name</td>\r\n\t\t<td>WAR</td>\r\n\t\t<td></td>\r\n\t</tr></thead>".format(str(team_number), team)
         high_war = -10
-        for player in teams[team]:
-            war = new_stats[player[1]]["WAR"]
+        for player_stuff in teams[team]:
+            player_key = player_stuff[1]
+            war = new_stats[player_key]["WAR"]
             if war > high_war:
                 high_war = war
-        for player in teams[team]:
-            war = new_stats[player[1]]["WAR"]
-            old_war = old_stats[player[1]]["WAR"]
+        for player_stuff in teams[team]:
+            draft = player_stuff[0]
+            player_key = player_stuff[1]
+            name = player_br[player_key]['Name']
+            fragment = player_br[player_key]['Fragment']
+            war = new_stats[player_key]["WAR"]
+            old_war = old_stats[player_key]["WAR"]
             total_war = total_war + war
             war_delta = war - old_war
             war_delta_text = "" if war_delta == 0 else "({:.1f})".format(war_delta)
             war_column_class = "normal"
             if war == high_war:
                 war_column_class = "bold"
-            player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(player[1][0].lower(),  player_br[player[1]], player[2])
-            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}' align='right'>{:.1f}</td><td>{}</td>\r\n\t</tr>".format(player[0], player_html, war_column_class, war, war_delta_text)
+            player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(fragment[0].lower(), fragment, name)
+            row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}' align='right'>{:.1f}</td><td>{}</td>\r\n\t</tr>".format(draft, player_html, war_column_class, war, war_delta_text)
             table = table + row
 
         new_stats["Mariners"][team] = total_war
@@ -493,32 +410,39 @@ def get_over_under_table(stats):
     over_unders["KelenicOPS"]["Current"] = kelenic_ops
     over_unders["KelenicOPS"]["Projected"] = kelenic_ops
 
-    old_guy_homers = accumulate_group_stat(over_unders["OldHomers"]["Guys"], stats, "HRs", get_standard_stat, "HR", "batting")
+    old_guy_homers, tool_tip = accumulate_group_stat(over_unders["OldHomers"]["Guys"], stats, 'HR')
     over_unders["OldHomers"]["Current"] = old_guy_homers
     over_unders["OldHomers"]["Projected"] = 162 / (wins + losses) * old_guy_homers
+    over_unders["OldHomers"]["ToolTip"] = tool_tip
 
-    young_guy_homers = accumulate_group_stat(over_unders["YoungHomers"]["Guys"], stats, "HRs", get_standard_stat, "HR", "batting")
+    young_guy_homers, tool_tip = accumulate_group_stat(over_unders["YoungHomers"]["Guys"], stats, "HR")
     over_unders["YoungHomers"]["Current"] = young_guy_homers
     over_unders["YoungHomers"]["Projected"] = 162 / (wins + losses) * young_guy_homers
+    over_unders["YoungHomers"]["ToolTip"] = tool_tip
 
-    combined_era = 9*(stats["Gilbert"]["EarnedRuns"] + stats["Kirby"]["EarnedRuns"]) / ((stats["Gilbert"]["Innings"] + stats["Kirby"]["Innings"]))
+    combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / ((stats["Gilbert"]["IP"] + stats["Kirby"]["IP"]))
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
 
-    combined_saves = stats["Munoz"]["Saves"] + stats["Sewald"]["Saves"]
+    combined_saves = stats["Munoz"]["SV"] + stats["Sewald"]["SV"]
     over_unders["MunozSewaldCombinedSaves"]["Current"] = combined_saves
     over_unders["MunozSewaldCombinedSaves"]["Projected"] = 162 / (wins + losses) * combined_saves
 
-    row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
+    row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td {}>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
     rows = []
     for over_under in over_unders:
         item = over_unders[over_under]
+
+        tool_tip = ''
+        if 'ToolTip' in over_under:
+            tool_tip = 'title="{}"'.format(over_under['ToolTip'])
 
         rounding = item["Rounding"]
         row = row_template
         row = row.format(item["Title"], item["Value"],
                          maybe_bold("Over", item["Over"], item["Projected"], item["Value"]),
                          maybe_bold("Under", item["Under"], item["Projected"], item["Value"]),
+                         tool_tip,
                          num1=item["Current"], places1=rounding[0], num2=item["Projected"], places2=rounding[1])
         rows.append(row)
 
@@ -704,14 +628,11 @@ def main(run_time, sleep_seconds):
 
 
 if __name__ == "__main__":
-
-    # while True:
-    current_time = datetime.utcnow()
-    current_hour = current_time.hour
-    # 3 to 4 hours
-    sleep_time = random.randint(60*180, 60*240)
-    if 11 <= current_hour <= 17:
-        # 30 minutes to an hour
-        sleep_time = random.randint(60*30, 60*60)
-    main(current_time, sleep_time)
-    # time.sleep(sleep_time)
+    while True:
+        current_time = datetime.utcnow()
+        current_hour = current_time.hour
+        if 13 <= current_hour <= 18:
+            # 30 minutes to an hour
+            sleep_time = random.randint(60*30, 60*60)
+            main(current_time, sleep_time)
+        time.sleep(60*37)
