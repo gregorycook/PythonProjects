@@ -35,6 +35,9 @@ DATA_FILE_PATH = os.path.join(script_path, 'data')
 BASE_PITCHER_STATS = {'SV': 0, 'IP': 0.0, 'ER': 0, 'WAR': 0.0, 'ERA': 0.00}
 BASE_HITTER_STATS = {'HR': 0.0, 'OPS': 0.0, 'WAR': 0.0}
 
+HANS = 'Hans'
+GREGORY = 'Gregory'
+
 # baseball reference keys
 player_br = {
     "Crawford": {'Fragment': "crawfjp01.shtml", 'type': "batting"},
@@ -63,7 +66,7 @@ player_br = {
 }
 
 teams = {
-    "Gregory": [
+    GREGORY: [
         (2, "Castillo", "Luis Castillo"),
         (3, "Kirby", "George Kirby"),
         (6, "Wong", "Kolten Wong"),
@@ -75,7 +78,7 @@ teams = {
         (18, "Flexen", "Chris Flexen"),
         (19, "Clase", "Jonatan Clase"),
     ],
-    "Hans": [
+    HANS: [
         (1, "Rodriguez", "Julio Rodríguez"),
         (4, "France", "Ty France"),
         (5, "Gilbert", "Logan Gilbert"),
@@ -342,7 +345,8 @@ def get_over_under_table(stats):
             "Over": "Hans",
             "Under": "Gregory",
             "Rounding": (0, 1),
-            "Guys": ["Suarez", "Hernandez", "Murphy", "Pollock", "Moore", "La Stella"]
+            "Guys": ["Suarez", "Hernandez", "Murphy", "Pollock", "Moore", "La Stella"],
+            "Points": 1
         },
         "YoungHomers": {
             "Title": "Homers by Young Guys",
@@ -350,42 +354,48 @@ def get_over_under_table(stats):
             "Over": "Hans",
             "Under": "Gregory",
             "Rounding": (0, 1),
-            "Guys": ["Kelenic", "Rodriguez", "Clase", "Raleigh", "Trammell"]
+            "Guys": ["Kelenic", "Rodriguez", "Clase", "Raleigh", "Trammell"],
+            "Points": 1
         },
         "RodriguezOPS": {
             "Title": "Rodriguez OPS",
             "Value": 0.875,
             "Over": "Gregory",
             "Under": "Hans",
-            "Rounding": (3, 3)
+            "Rounding": (3, 3),
+            "Points": 1
         },
         "Wins": {
             "Title": "Wins",
             "Value": 89.5,
             "Over": "Gregory",
             "Under": "Hans",
-            "Rounding": (0, 1)
+            "Rounding": (0, 1),
+            "Points": 2
         },
         "KelenicOPS": {
             "Title": "Kelenic OPS",
             "Value": 0.75,
             "Under": "Gregory",
             "Over": "Hans",
-            "Rounding": (3, 3)
+            "Rounding": (3, 3),
+            "Points": 1
         },
         "GilbertKirbyERA": {
             "Title": "Gilbert/Kirby Combined ERA",
             "Value": 3.25,
             "Over": "Hans",
             "Under": "Gregory",
-            "Rounding": (2, 2)
+            "Rounding": (2, 2),
+            "Points": 1
         },
         "MunozSewaldCombinedSaves": {
             "Title": "Munoz/Sewald Combined Saves",
             "Value": 39.5,
             "Over": "Hans",
             "Under": "Gregory",
-            "Rounding": (0, 1)
+            "Rounding": (0, 1),
+            "Points": 1
         }
     }
 
@@ -459,10 +469,16 @@ def get_over_under_table(stats):
 def get_other_table(stats):
     others = {
         "BestTeam": {
-            "Title": "Team WAR"
+            "Title": "Team WAR",
+            "Points": 3
         },
         "BestPlayer": {
-            "Title": "Player WAR"
+            "Title": "Player WAR",
+            "Points": 0
+        },
+        "WorstPlayer": {
+            "Title": "Player WAR",
+            "Points": 1
         }
     }
 
@@ -485,23 +501,45 @@ def get_other_table(stats):
 
     # Best Player(s)
     global_high_war = -10
+    global_low_war = 100
     best_players = []
-    winners = []
+    worst_players = []
+    best_player_winners = []
+    worst_player_winners = []
     for team in teams:
         for player in teams[team]:
             if stats[player[1]]["WAR"] > global_high_war:
                 best_players = [player[2]]
                 global_high_war = stats[player[1]]["WAR"]
-                winners = [team]
+                best_player_winners = [team]
             elif stats[player[1]]["WAR"] == global_high_war:
                 best_players.append(player[2])
-                if team not in winners:
-                    winners.append(team)
+                if team not in best_player_winners:
+                    best_player_winners.append(team)
 
+            if stats[player[1]]["WAR"] < global_low_war:
+                worst_players = [player[2]]
+                global_low_war = stats[player[1]]["WAR"]
+                worst_player_winners = [team]
+            elif stats[player[1]]["WAR"] == global_low_war:
+                worst_players.append(player[2])
+                if team not in worst_player_winners:
+                    worst_player_winners.append(team)
 
     others["BestPlayer"]["Best"] = ", ".join(best_players)
     others["BestPlayer"]["Relevant"] = "{:.1f} WAR".format(global_high_war)
-    others["BestPlayer"]["Winner"] = ", ".join(winners)
+    others["BestPlayer"]["Winner"] = ", ".join(best_player_winners)
+
+    if len(worst_player_winners) == 2:
+        others["WorstPlayer"]["Points"] = 0.5
+    elif HANS in worst_player_winners:
+        worst_player_winners = [GREGORY]
+    else:
+        worst_player_winners = [HANS]
+
+    others["WorstPlayer"]["Best"] = ", ".join(worst_players)
+    others["WorstPlayer"]["Relevant"] = "{:.1f} WAR".format(global_low_war)
+    others["WorstPlayer"]["Winner"] = ", ".join(worst_player_winners)
 
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td class='bold'>{}</td>"
     rows = []
@@ -519,21 +557,23 @@ def calculate_scores(over_unders, others):
     gregory = 0
     for item in over_unders:
         over = over_unders[item]["Projected"] > over_unders[item]["Value"]
+        points = over_unders[item]["Points"]
         if over and over_unders[item]["Over"] == "Hans":
-            hans += 1
+            hans += points
         elif not over and over_unders[item]["Under"] == "Hans":
-            hans += 1
+            hans += points
         else:
-            gregory += 1
+            gregory += points
 
     for item in others:
-        if "Hans" in others[item]["Winner"] and "Gregory" in others[item]["Winner"]:
-            hans += .5
-            gregory += .5
-        elif "Hans" in others[item]["Winner"]:
-            hans += 1
-        elif "Gregory" in others[item]["Winner"]:
-            gregory += 1
+        points = others[item]["Points"]
+        if HANS in others[item]["Winner"] and GREGORY in others[item]["Winner"]:
+            hans += points/2
+            gregory += points/2
+        elif HANS in others[item]["Winner"]:
+            hans += points
+        elif GREGORY in others[item]["Winner"]:
+            gregory += points
 
     return hans, gregory
 
@@ -646,6 +686,6 @@ if __name__ == "__main__":
             current_hour = current_time.hour
             if 13 <= current_hour <= 18:
                 # 30 minutes to an hour
-                sleep_time = random.randint(60*30, 60*60)
+                sleep_time = 60 * 37
                 main(current_time, sleep_time)
-            time.sleep(60*37)
+            time.sleep(sleep_time)
