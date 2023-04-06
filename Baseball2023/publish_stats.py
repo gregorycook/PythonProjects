@@ -473,11 +473,11 @@ def get_other_table(stats):
             "Points": 3
         },
         "BestPlayer": {
-            "Title": "Player WAR",
+            "Title": "Best Player WAR",
             "Points": 0
         },
         "WorstPlayer": {
-            "Title": "Player WAR",
+            "Title": "Worst Player WAR",
             "Points": 1
         }
     }
