@@ -28,6 +28,8 @@ time.sleep(15)
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
+TEST = False
+
 DATA_FILE_PATH = os.path.join(script_path, 'data')
 
 BASE_PITCHER_STATS = {'SV': 0, 'IP': 0.0, 'ER': 0, 'WAR': 0.0, 'ERA': 0.00}
@@ -96,7 +98,7 @@ def accumulate_group_stat(guys, stats, local_name):
         total = total + stat
         if stat > 0:
             player = player_br[guy]["Name"]
-            tool_tip = "{}<br>{}: {}".format(tool_tip, player, stat)
+            tool_tip = "{}&#10;{}: {}".format(tool_tip, player, stat)
 
     return total, tool_tip
 
@@ -173,10 +175,8 @@ def get_stat_dict():
             name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
             this_player_stats = {}
             stat_dict[name] = this_player_stats
-            print(player['athlete']['shortName'])
             for stat in player['statGroups']['stats']:
                 if stat['name'] in collect_pitching:
-                    print("{} -- {}={}".format(name, stat['abbreviation'], stat['displayValue']))
                     this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
     espn_page = 'https://www.espn.com/mlb/standings'
@@ -218,18 +218,23 @@ def get_stat_dict():
 
     for player_key in player_br:
         player = player_br[player_key]
-        page_fragment = player['Fragment']
+        if TEST:
+            player["Name"] = "Joe"
+        else:
+            page_fragment = player['Fragment']
 
-        site = main_player_page.format(page_fragment[0], page_fragment)
-        page = requests.get(site, headers)
-        tree = html.fromstring(page.text)
+            site = main_player_page.format(page_fragment[0], page_fragment)
+            page = requests.get(site, headers)
+            tree = html.fromstring(page.text)
 
-        # grab player's name from page, all weird characters included!
-        name = tree.xpath('//div[@id="info"]//span/text()')
-        if len(name) > 0:
-            player['Name'] = name[0]
+            # grab player's name from page, all weird characters included!
+            name = tree.xpath('//div[@id="info"]//span/text()')
+            if len(name) > 0:
+                player['Name'] = name[0]
+            else:
+                player['Name'] = '???????'
 
-        time.sleep(10)
+            time.sleep(10)
 
     return stat_dict
 
@@ -423,10 +428,12 @@ def get_over_under_table(stats):
     combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / ((stats["Gilbert"]["IP"] + stats["Kirby"]["IP"]))
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
+    over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={}&#10;Gilbert: IP={} ER={}'.format(stats["Kirby"]["IP"], stats["Kirby"]["ER"], stats["Gilbert"]["IP"], stats["Gilbert"]["ER"])
 
     combined_saves = stats["Munoz"]["SV"] + stats["Sewald"]["SV"]
     over_unders["MunozSewaldCombinedSaves"]["Current"] = combined_saves
     over_unders["MunozSewaldCombinedSaves"]["Projected"] = 162 / (wins + losses) * combined_saves
+    over_unders["MunozSewaldCombinedSaves"]['ToolTip'] = 'Munoz: {}&#10;Sewald: {}'.format(stats["Munoz"]["SV"], stats["Sewald"]["SV"])
 
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td {}>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
     rows = []
@@ -434,8 +441,8 @@ def get_over_under_table(stats):
         item = over_unders[over_under]
 
         tool_tip = ''
-        if 'ToolTip' in over_under:
-            tool_tip = 'title="{}"'.format(over_under['ToolTip'])
+        if 'ToolTip' in item:
+            tool_tip = 'title="{}"'.format(item['ToolTip'])
 
         rounding = item["Rounding"]
         row = row_template
@@ -621,18 +628,24 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<Gregory/>", str(gregory))
 
     save_html(html_text)
-    upload_site()
+    if not TEST:
+        upload_site()
 
     # saving these at the end because they get updated a couple of times throughout the process
     save_stats(new_stats)
 
 
 if __name__ == "__main__":
-    while True:
+    if TEST:
         current_time = datetime.utcnow()
-        current_hour = current_time.hour
-        if 13 <= current_hour <= 18:
-            # 30 minutes to an hour
-            sleep_time = random.randint(60*30, 60*60)
-            main(current_time, sleep_time)
-        time.sleep(60*37)
+        sleep_time = random.randint(60*30, 60*60)
+        main(current_time, sleep_time)
+    else:
+        while True:
+            current_time = datetime.utcnow()
+            current_hour = current_time.hour
+            if 13 <= current_hour <= 18:
+                # 30 minutes to an hour
+                sleep_time = random.randint(60*30, 60*60)
+                main(current_time, sleep_time)
+            time.sleep(60*37)
