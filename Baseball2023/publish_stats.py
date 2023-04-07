@@ -530,12 +530,11 @@ def get_other_table(stats):
     others["BestPlayer"]["Relevant"] = "{:.1f} WAR".format(global_high_war)
     others["BestPlayer"]["Winner"] = ", ".join(best_player_winners)
 
-    if len(worst_player_winners) == 2:
-        others["WorstPlayer"]["Points"] = 0.5
-    elif HANS in worst_player_winners:
-        worst_player_winners = [GREGORY]
-    else:
-        worst_player_winners = [HANS]
+    if len(worst_player_winners) == 1:
+        if HANS in worst_player_winners:
+            worst_player_winners = [GREGORY]
+        else:
+            worst_player_winners = [HANS]
 
     others["WorstPlayer"]["Best"] = ", ".join(worst_players)
     others["WorstPlayer"]["Relevant"] = "{:.1f} WAR".format(global_low_war)
