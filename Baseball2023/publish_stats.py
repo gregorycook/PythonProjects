@@ -48,7 +48,7 @@ player_br = {
     "Castillo": {'Fragment': "castilu02.shtml", 'type': "pitching"},
     "Wong": {'Fragment': "wongko01.shtml", 'type': "batting"},
     "Haggerty": {'Fragment': "haggesa01.shtml", 'type': "batting"},
-    "Clase": {'Fragment': "clasejo01.shtml", 'type': "batting", "Name": "Johatan Clase"},
+    "Clase": {'Fragment': "clasejo01.shtml", 'type': "batting", "Name": "Jonatan Clase"},
     "Flexen": {'Fragment': "flexech01.shtml", 'type': "pitching"},
     "Murphy": {'Fragment': "murphto04.shtml", 'type': "batting"},
     "Raleigh": {'Fragment': "raleica01.shtml", 'type': "batting"},
@@ -101,7 +101,7 @@ def accumulate_group_stat(guys, stats, local_name):
         total = total + stat
         if stat > 0:
             player = player_br[guy]["Name"]
-            tool_tip = "{}&#10;{}: {}".format(tool_tip, player, stat)
+            tool_tip = "{}&#10;{}: {}".format(tool_tip, player, my_round(stat, 0))
 
     return total, tool_tip
 
@@ -234,8 +234,6 @@ def get_stat_dict():
             name = tree.xpath('//div[@id="info"]//span/text()')
             if len(name) > 0:
                 player['Name'] = name[0]
-            else:
-                player['Name'] = '???????'
 
             time.sleep(10)
 
@@ -337,6 +335,12 @@ def get_total_negative_war(stats):
     return result
 
 
+def convert_innings_pitched(standard_ip):
+    truncated = my_round(standard_ip, 0)
+    outs = standard_ip - truncated
+    return truncated + 10 * outs / 3
+
+
 def get_over_under_table(stats):
     over_unders = {
         "OldHomers": {
@@ -435,15 +439,17 @@ def get_over_under_table(stats):
     over_unders["YoungHomers"]["Projected"] = 162 / (wins + losses) * young_guy_homers
     over_unders["YoungHomers"]["ToolTip"] = tool_tip
 
-    combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / ((stats["Gilbert"]["IP"] + stats["Kirby"]["IP"]))
+    gilbert_ip = convert_innings_pitched(stats["Gilbert"]["IP"])
+    kirby_ip = convert_innings_pitched(stats["Kirby"]["IP"])
+    combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / (gilbert_ip +kirby_ip)
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
-    over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={}&#10;Gilbert: IP={} ER={}'.format(stats["Kirby"]["IP"], stats["Kirby"]["ER"], stats["Gilbert"]["IP"], stats["Gilbert"]["ER"])
+    over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={}&#10;Gilbert: IP={} ER={}'.format(my_round(kirby_ip, 2), my_round(stats["Kirby"]["ER"], 0), my_round(gilbert_ip, 2), my_round(stats["Gilbert"]["ER"], 0))
 
     combined_saves = stats["Munoz"]["SV"] + stats["Sewald"]["SV"]
     over_unders["MunozSewaldCombinedSaves"]["Current"] = combined_saves
     over_unders["MunozSewaldCombinedSaves"]["Projected"] = 162 / (wins + losses) * combined_saves
-    over_unders["MunozSewaldCombinedSaves"]['ToolTip'] = 'Munoz: {}&#10;Sewald: {}'.format(stats["Munoz"]["SV"], stats["Sewald"]["SV"])
+    over_unders["MunozSewaldCombinedSaves"]['ToolTip'] = 'Munoz: {}&#10;Sewald: {}'.format(my_round(stats["Munoz"]["SV"], 0), my_round(stats["Sewald"]["SV"], 0))
 
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td {}>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
     rows = []
@@ -485,7 +491,6 @@ def get_other_table(stats):
     # Team WAR
     hans_team_war = stats["Mariners"]["Hans"]
     gregory_team_war = stats["Mariners"]["Gregory"]
-    print("{}, {}".format(gregory_team_war, hans_team_war))
     if gregory_team_war > hans_team_war:
         others["BestTeam"]["Best"] = "Team Gregory"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(gregory_team_war)
