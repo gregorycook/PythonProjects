@@ -288,7 +288,7 @@ def get_team_tables(new_stats, old_stats):
             row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}' align='right'>{:.1f}</td><td>{}</td>\r\n\t</tr>".format(draft, player_html, war_column_class, war, war_delta_text)
             table = table + row
 
-        new_stats["Mariners"][team] = total_war
+        new_stats["Mariners"][team] = my_round(total_war, 2)
         war_delta = total_war - old_stats["Mariners"][team]
         war_delta_text = "" if war_delta == 0 else "({:.1f})".format(war_delta)
         table = table + "</table>\r\n<p/>Total War: {:.1f} {}<p/></div>".format(total_war, war_delta_text)
@@ -485,6 +485,7 @@ def get_other_table(stats):
     # Team WAR
     hans_team_war = stats["Mariners"]["Hans"]
     gregory_team_war = stats["Mariners"]["Gregory"]
+    print("{}, {}".format(gregory_team_war, hans_team_war))
     if gregory_team_war > hans_team_war:
         others["BestTeam"]["Best"] = "Team Gregory"
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(gregory_team_war)
