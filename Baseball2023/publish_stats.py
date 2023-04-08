@@ -346,8 +346,8 @@ def get_over_under_table(stats):
         "OldHomers": {
             "Title": "Homers by Old Guys",
             "Value": 57.5,
-            "Over": "Hans",
-            "Under": "Gregory",
+            "Over": HANS,
+            "Under": GREGORY,
             "Rounding": (0, 1),
             "Guys": ["Suarez", "Hernandez", "Murphy", "Pollock", "Moore", "La Stella"],
             "Points": 1
@@ -355,8 +355,8 @@ def get_over_under_table(stats):
         "YoungHomers": {
             "Title": "Homers by Young Guys",
             "Value": 68.5,
-            "Over": "Hans",
-            "Under": "Gregory",
+            "Over": HANS,
+            "Under": GREGORY,
             "Rounding": (0, 1),
             "Guys": ["Kelenic", "Rodriguez", "Clase", "Raleigh", "Trammell"],
             "Points": 1
@@ -364,40 +364,40 @@ def get_over_under_table(stats):
         "RodriguezOPS": {
             "Title": "Rodriguez OPS",
             "Value": 0.875,
-            "Over": "Gregory",
-            "Under": "Hans",
+            "Over": GREGORY,
+            "Under": HANS,
             "Rounding": (3, 3),
             "Points": 1
         },
         "Wins": {
             "Title": "Wins",
             "Value": 89.5,
-            "Over": "Gregory",
-            "Under": "Hans",
+            "Over": GREGORY,
+            "Under": HANS,
             "Rounding": (0, 1),
             "Points": 2
         },
         "KelenicOPS": {
             "Title": "Kelenic OPS",
             "Value": 0.75,
-            "Under": "Gregory",
-            "Over": "Hans",
+            "Under": GREGORY,
+            "Over": HANS,
             "Rounding": (3, 3),
             "Points": 1
         },
         "GilbertKirbyERA": {
             "Title": "Gilbert/Kirby Combined ERA",
             "Value": 3.25,
-            "Over": "Hans",
-            "Under": "Gregory",
+            "Over": HANS,
+            "Under": GREGORY,
             "Rounding": (2, 2),
             "Points": 1
         },
         "MunozSewaldCombinedSaves": {
             "Title": "Munoz/Sewald Combined Saves",
             "Value": 39.5,
-            "Over": "Hans",
-            "Under": "Gregory",
+            "Over": HANS,
+            "Under": GREGORY,
             "Rounding": (0, 1),
             "Points": 1
         }
@@ -489,20 +489,20 @@ def get_other_table(stats):
     }
 
     # Team WAR
-    hans_team_war = stats["Mariners"]["Hans"]
-    gregory_team_war = stats["Mariners"]["Gregory"]
+    hans_team_war = stats["Mariners"][HANS]
+    gregory_team_war = stats["Mariners"][GREGORY]
     if gregory_team_war > hans_team_war:
-        others["BestTeam"]["Best"] = "Team Gregory"
+        others["BestTeam"]["Best"] = "Team {}".format(GREGORY)
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(gregory_team_war)
-        others["BestTeam"]["Winner"] = "Gregory"
+        others["BestTeam"]["Winner"] = GREGORY
     elif hans_team_war > gregory_team_war:
-        others["BestTeam"]["Best"] = "Team Hans"
+        others["BestTeam"]["Best"] = "Team {}".format(HANS)
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(hans_team_war)
-        others["BestTeam"]["Winner"] = "Hans"
+        others["BestTeam"]["Winner"] = HANS
     else:
-        others["BestTeam"]["Best"] = "Team Hans, Team Gregory"
+        others["BestTeam"]["Best"] = "Team {}, Team {}".format(HANS, GREGORY)
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(hans_team_war)
-        others["BestTeam"]["Winner"] = "Hans, Gregory"
+        others["BestTeam"]["Winner"] = "{}, {}".format(HANS, GREGORY)
 
 
     # Best Player(s)
@@ -645,12 +645,6 @@ def main(run_time, sleep_seconds):
     html_base = ''.join(html_base)
     html_text = html_base
 
-    # set last updated and other header stuff
-    html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<NextUpdateTime/>", (run_time + timedelta(seconds=sleep_seconds)).strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<GamesPlayed/>", str(games_played))
-    html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
-
     # set team tables
     team_tables = get_team_tables(new_stats, old_stats)
     html_text = html_text.replace("<TeamTables/>", team_tables)
@@ -672,12 +666,18 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<Hans/>", str(hans))
     html_text = html_text.replace("<Gregory/>", str(gregory))
 
+    # saving these at the end because they get updated a couple of times throughout the process
+    save_stats(new_stats)
+
+    # set last updated and other header stuff
+    html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateTime/>", (datetime.utcnow() + timedelta(seconds=sleep_seconds)).strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<GamesPlayed/>", str(games_played))
+    html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
+
     save_html(html_text)
     if not TEST:
         upload_site()
-
-    # saving these at the end because they get updated a couple of times throughout the process
-    save_stats(new_stats)
 
 
 if __name__ == "__main__":
@@ -689,7 +689,7 @@ if __name__ == "__main__":
         while True:
             current_time = datetime.utcnow()
             current_hour = current_time.hour
-            if 13 <= current_hour <= 18:
+            if 13 <= current_hour <= 17:
                 # 30 minutes to an hour
                 sleep_time = 60 * 37
                 main(current_time, sleep_time)
