@@ -50,6 +50,7 @@
     <body>
         <div class = "title">Last Updated: <LastUpdated/> UTC (next update at <NextUpdateTime/>)</p></div>
         <div><GamesPlayed/> games played compared to previous <PreviousGamesPlayed/></p></div>
+        <div>Next Game: <NextGame/></p></div>
         <div class="title">Teams</div>
         <div class="grid-container">
             <TeamTables/>

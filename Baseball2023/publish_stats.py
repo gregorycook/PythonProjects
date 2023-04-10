@@ -182,6 +182,7 @@ def get_stat_dict():
                 if stat['name'] in collect_pitching:
                     this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
+    # look up record from espn standsing page
     espn_page = 'https://www.espn.com/mlb/standings'
     page = requests.get(espn_page, headers)
     start_index = page.text.index('{"app":')
@@ -216,6 +217,20 @@ def get_stat_dict():
             elif player_br[player]['type'] == 'pitching':
                 stat_dict[player] = BASE_PITCHER_STATS
 
+    # look up next game from espn team schedule page
+    espn_team_schedule_page = 'https://www.espn.com/mlb/team/schedule/_/name/sea/seattle-mariners'
+    page = requests.get(espn_team_schedule_page, headers)
+    start_index = page.text.index('{"app":')
+    end_index = page.text.index('"user":{}}') + 10
+    stats_json = page.text[start_index:end_index]
+    y = json.loads(stats_json)
+    thing = y['page']['content']['scheduleData']['teamSchedule'] [0]['events']['pre'][0]['group'][0]
+    stat_dict['Mariners']['NextGame'] = {}
+    stat_dict['Mariners']['NextGame']['Opponent'] = thing['opponent']['displayName']
+    stat_dict['Mariners']['NextGame']['Time'] = thing['time']['time']
+    stat_dict['Mariners']['NextGame']['GameCast'] = thing['time']['link']
+
+    # look up player names from BaseballReference
     main_player_page = "https://www.baseball-reference.com/players/{}/{}"
     standard_stat_xpath = "string(//tr[@id='{}_{}.2023']/td[@data-stat='{}'])"
 
@@ -441,7 +456,7 @@ def get_over_under_table(stats):
 
     gilbert_ip = convert_innings_pitched(stats["Gilbert"]["IP"])
     kirby_ip = convert_innings_pitched(stats["Kirby"]["IP"])
-    combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / (gilbert_ip +kirby_ip)
+    combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / (gilbert_ip + kirby_ip)
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
     over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={}&#10;Gilbert: IP={} ER={}'.format(my_round(kirby_ip, 2), my_round(stats["Kirby"]["ER"], 0), my_round(gilbert_ip, 2), my_round(stats["Gilbert"]["ER"], 0))
@@ -674,6 +689,9 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<NextUpdateTime/>", (datetime.utcnow() + timedelta(seconds=sleep_seconds)).strftime("%m/%d/%Y, %H:%M:%S"))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
+
+    next_game = new_stats['Mariners']['NextGame']
+    html_text = html_text.replace('<NextGame/>', "{} at {}.  <a href='{}'>ESPN Game Cast</a>".format(next_game['Opponent'], next_game['Time'], next_game['GameCast']))
 
     save_html(html_text)
     if not TEST:
