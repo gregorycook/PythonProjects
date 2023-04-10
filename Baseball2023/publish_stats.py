@@ -691,7 +691,7 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
     next_game = new_stats['Mariners']['NextGame']
-    html_text = html_text.replace('<NextGame/>', "{} at {}.  <a href='{}'>ESPN Game Cast</a>".format(next_game['Opponent'], next_game['Time'], next_game['GameCast']))
+    html_text = html_text.replace('<NextGame/>', "{} at {}.  <a target='_blank' href='{}'>ESPN Game Cast</a>".format(next_game['Opponent'], next_game['Time'], next_game['GameCast']))
 
     save_html(html_text)
     if not TEST:
