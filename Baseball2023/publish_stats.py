@@ -38,7 +38,7 @@ DAYS = {
     6: 'Sunday'
 }
 
-TEST = True
+TEST = False
 
 DATA_FILE_PATH = os.path.join(script_path, 'data')
 
