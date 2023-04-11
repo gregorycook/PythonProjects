@@ -28,7 +28,17 @@ time.sleep(15)
 
 script_path = os.path.dirname(os.path.realpath(__file__))
 
-TEST = False
+DAYS = {
+    0: 'Monday',
+    1: 'Tuesday',
+    2: 'Wednesday',
+    3: 'Thursday',
+    4: 'Friday',
+    5: 'Saturday',
+    6: 'Sunday'
+}
+
+TEST = True
 
 DATA_FILE_PATH = os.path.join(script_path, 'data')
 
@@ -690,8 +700,18 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
+    # set next game stuff
+    # <div>Next Game: <em><NextGameTime/></em> vs. <NextGameOpponent> /<a href="<NextGameLink>" target="_blank">Game Cast</a>)</p></div>
+    #     stat_dict['Mariners']['NextGame']['Opponent'] = thing['opponent']['displayName']
+    #     stat_dict['Mariners']['NextGame']['Time'] = thing['time']['time']
+    #     stat_dict['Mariners']['NextGame']['GameCast'] = thing['time']['link']
     next_game = new_stats['Mariners']['NextGame']
-    html_text = html_text.replace('<NextGame/>', "{} at {}.  <a target='_blank' href='{}'>ESPN Game Cast</a>".format(next_game['Opponent'], next_game['Time'], next_game['GameCast']))
+    next_game_time = datetime.strptime(next_game['Time'], '%Y-%m-%dT%H:%MZ') + timedelta(hours=-7)
+    next_game_day = DAYS[next_game_time.date().weekday()]
+    html_text = html_text.replace('<NextGameTime/>', "{} at {}".format(next_game_day, next_game_time.strftime('%I:%M %p')))
+    html_text = html_text.replace('<NextGameOpponent/>', next_game['Opponent'])
+    html_text = html_text.replace('<NextGameLink/>', next_game['GameCast'])
+    print(next_game['GameCast'])
 
     save_html(html_text)
     if not TEST:
