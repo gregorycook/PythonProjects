@@ -50,6 +50,7 @@ GREGORY = 'Gregory'
 
 # baseball reference keys
 player_br = {
+    "Rodriguez": {'Fragment': "rodriju01.shtml", 'type': "batting"},
     "Crawford": {'Fragment': "crawfjp01.shtml", 'type': "batting"},
     "Sewald": {'Fragment': "sewalpa01.shtml", 'type': "pitching"},
     "Gilbert": {'Fragment': "gilbelo01.shtml", 'type': "pitching"},
@@ -62,7 +63,6 @@ player_br = {
     "Flexen": {'Fragment': "flexech01.shtml", 'type': "pitching"},
     "Murphy": {'Fragment': "murphto04.shtml", 'type': "batting"},
     "Raleigh": {'Fragment': "raleica01.shtml", 'type': "batting"},
-    "Rodriguez": {'Fragment': "rodriju01.shtml", 'type': "batting"},
     "Suarez": {'Fragment': "suareeu01.shtml", 'type': "batting"},
     "France": {'Fragment': "francty01.shtml", 'type': "batting"},
     "Kelenic": {'Fragment': "kelenja01.shtml", 'type': "batting"},
@@ -184,7 +184,7 @@ def get_stat_dict():
 
     collect_pitching = ['saves', 'innings', 'earnedRuns', 'WARBR', 'ERA']
     for player in player_stats:
-        if player['athlete']['shortName'] != 'D. Castillo':
+        if player['athlete']['shortName'] != 'D. Castillo' and player['athlete']['shortName'] != 'J. Rodriguez':
             name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
             this_player_stats = {}
             stat_dict[name] = this_player_stats
