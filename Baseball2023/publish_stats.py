@@ -21,7 +21,7 @@ headers = {
     'Cache-Control': 'private, max-age=0, no-cache',
     "Pragma": "no-cache",
     "Expires": "Thu, 01 Jan 1970 00:00:00 GMT",
-    "SessionId": str(session_id)
+    "SessionId": str(session_id),
 }
 
 time.sleep(15)
@@ -39,6 +39,7 @@ DAYS = {
 }
 
 TEST = False
+SLEEP_TIME = 6
 
 DATA_FILE_PATH = os.path.join(script_path, 'data')
 
@@ -172,6 +173,7 @@ def get_stat_dict():
             if stat['name'] in collect_batting:
                 this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
+    time.sleep(SLEEP_TIME)
     espn_page = 'https://www.espn.com/mlb/team/stats/_/type/pitching/name/sea'
     page = requests.get(espn_page, headers)
     start_index = page.text.index('{"app":')
@@ -193,6 +195,7 @@ def get_stat_dict():
                     this_player_stats[stat['abbreviation']] = float(stat['displayValue'])
 
     # look up record from espn standsing page
+    time.sleep(SLEEP_TIME)
     espn_page = 'https://www.espn.com/mlb/standings'
     page = requests.get(espn_page, headers)
     start_index = page.text.index('{"app":')
@@ -228,6 +231,7 @@ def get_stat_dict():
                 stat_dict[player] = BASE_PITCHER_STATS
 
     # look up next game from espn team schedule page
+    time.sleep(SLEEP_TIME)
     espn_team_schedule_page = 'https://www.espn.com/mlb/team/schedule/_/name/sea/seattle-mariners'
     page = requests.get(espn_team_schedule_page, headers)
     start_index = page.text.index('{"app":')
@@ -260,7 +264,7 @@ def get_stat_dict():
             if len(name) > 0:
                 player['Name'] = name[0]
 
-            time.sleep(10)
+            time.sleep(SLEEP_TIME)
 
     return stat_dict
 
@@ -711,7 +715,6 @@ def main(run_time, sleep_seconds):
     html_text = html_text.replace('<NextGameTime/>', "{} at {}".format(next_game_day, next_game_time.strftime('%I:%M %p')))
     html_text = html_text.replace('<NextGameOpponent/>', next_game['Opponent'])
     html_text = html_text.replace('<NextGameLink/>', next_game['GameCast'])
-    print(next_game['GameCast'])
 
     save_html(html_text)
     if not TEST:
