@@ -660,7 +660,7 @@ def upload_site():
         index_html_file.close()
 
 
-def main(run_time, sleep_seconds):
+def main(run_time, next_time):
     # get today's stats
     new_stats = get_stat_dict()
 
@@ -700,7 +700,7 @@ def main(run_time, sleep_seconds):
 
     # set last updated and other header stuff
     html_text = html_text.replace("<LastUpdated/>", run_time.strftime("%m/%d/%Y, %H:%M:%S"))
-    html_text = html_text.replace("<NextUpdateTime/>", (datetime.utcnow() + timedelta(seconds=sleep_seconds)).strftime("%m/%d/%Y, %H:%M:%S"))
+    html_text = html_text.replace("<NextUpdateTime/>", next_time.strftime("%m/%d/%Y, %H:%M:%S"))
     html_text = html_text.replace("<GamesPlayed/>", str(games_played))
     html_text = html_text.replace("<PreviousGamesPlayed/>", str(previous_games_played))
 
@@ -724,14 +724,17 @@ def main(run_time, sleep_seconds):
 if __name__ == "__main__":
     if TEST:
         current_time = datetime.utcnow()
-        sleep_time = random.randint(60*30, 60*60)
-        main(current_time, sleep_time)
+        next_time = current_time + timedelta(minutes=37)
+        main(current_time, next_time)
     else:
         while True:
             current_time = datetime.utcnow()
+            next_time = current_time + timedelta(minutes=37)
             current_hour = current_time.hour
             if 13 <= current_hour <= 17:
-                # 30 minutes to an hour
-                sleep_time = 60 * 37
-                main(current_time, sleep_time)
+                if next_time.hour > 17:
+                    truncated = next_time.replace(hour=0, minute=0, second=0, microsecond=0)
+                    next_time = truncated + timedelta(days=1, hours=13, minutes=21)
+                main(current_time, next_time)
+            sleep_time = (next_time - datetime.utcnow()).total_seconds()
             time.sleep(sleep_time)
