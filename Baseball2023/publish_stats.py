@@ -238,7 +238,8 @@ def get_stat_dict():
     end_index = page.text.index('"user":{}}') + 10
     stats_json = page.text[start_index:end_index]
     y = json.loads(stats_json)
-    thing = y['page']['content']['scheduleData']['teamSchedule'] [0]['events']['pre'][0]['group'][0]
+
+    thing = y['page']['content']['scheduleData']['teamSchedule'][0]['events']['post'][0]['group'][0]
     stat_dict['Mariners']['NextGame'] = {}
     stat_dict['Mariners']['NextGame']['Opponent'] = thing['opponent']['displayName']
     stat_dict['Mariners']['NextGame']['Time'] = thing['time']['time']
