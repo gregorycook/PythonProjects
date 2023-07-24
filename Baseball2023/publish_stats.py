@@ -72,6 +72,7 @@ player_br = {
     "Munoz": {'Fragment': "munozan01.shtml", 'type': "pitching"},
     "Pollock": {'Fragment': "polloaj01.shtml", 'type': "batting"},
     "La Stella": {'Fragment': "lasteto01.shtml", 'type': "batting"},
+    "Ford": {'Fragment': "fordmi01.shtml", 'type': "batting"},
     "Moore": {'Fragment': "mooredy01.shtml", 'type': "batting"},
     "Trammell": {'Fragment': "trammta01.shtml", 'type': "batting"},
 }
@@ -186,7 +187,7 @@ def get_stat_dict():
 
     collect_pitching = ['saves', 'innings', 'earnedRuns', 'WARBR', 'ERA']
     for player in player_stats:
-        if player['athlete']['shortName'] != 'D. Castillo' and player['athlete']['shortName'] != 'J. Rodriguez':
+        if player['athlete']['shortName'] != 'D. Castillo' and player['athlete']['shortName'] != 'J. Rodriguez' and player['athlete']['shortName'] != 'M. Ford':
             name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
             this_player_stats = {}
             stat_dict[name] = this_player_stats
