@@ -380,7 +380,7 @@ def get_over_under_table(stats):
             "Over": HANS,
             "Under": GREGORY,
             "Rounding": (0, 1),
-            "Guys": ["Suarez", "Hernandez", "Murphy", "Pollock", "Moore", "La Stella", "Ford"],
+            "Guys": ["Suarez", "Hernandez", "Murphy", "Pollock", "Moore", "La Stella", "Ford", "Wong"],
             "Points": 1
         },
         "YoungHomers": {
