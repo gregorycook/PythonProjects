@@ -475,7 +475,7 @@ def get_over_under_table(stats):
     combined_era = 9*(stats["Gilbert"]["ER"] + stats["Kirby"]["ER"]) / (gilbert_ip + kirby_ip)
     over_unders["GilbertKirbyERA"]["Current"] = combined_era
     over_unders["GilbertKirbyERA"]["Projected"] = combined_era
-    over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={}&#10;Gilbert: IP={} ER={}'.format(my_round(kirby_ip, 2), my_round(stats["Kirby"]["ER"], 0), my_round(gilbert_ip, 2), my_round(stats["Gilbert"]["ER"], 0))
+    over_unders["GilbertKirbyERA"]['ToolTip'] = 'Kirby: IP={} ER={} ERA={}&#10;Gilbert: IP={} ER={} ERA={}'.format(my_round(kirby_ip, 2), my_round(stats["Kirby"]["ER"], 0), my_round(stats["Kirby"]["ERA"], 2), my_round(gilbert_ip, 2), my_round(stats["Gilbert"]["ER"], 0), my_round(stats["Gilbert"]["ERA"], 2))
 
     combined_saves = stats["Munoz"]["SV"] + stats["Sewald"]["SV"]
     over_unders["MunozSewaldCombinedSaves"]["Current"] = combined_saves
