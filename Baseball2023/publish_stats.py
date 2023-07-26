@@ -726,17 +726,17 @@ def main(run_time, next_time):
 if __name__ == "__main__":
     if TEST:
         current_time = datetime.utcnow()
-        next_time = current_time + timedelta(minutes=37)
+        next_time = current_time + timedelta(minutes=random.randint(27, 45))
         main(current_time, next_time)
     else:
         while True:
             current_time = datetime.utcnow()
-            next_time = current_time + timedelta(minutes=37)
+            next_time = current_time + timedelta(minutes=random.randint(27, 45))
             current_hour = current_time.hour
-            if 13 <= current_hour <= 17:
-                if next_time.hour > 17:
+            if 13 <= current_hour <= 16:
+                if next_time.hour > 16:
                     truncated = next_time.replace(hour=0, minute=0, second=0, microsecond=0)
-                    next_time = truncated + timedelta(days=1, hours=13, minutes=21)
+                    next_time = truncated + timedelta(days=1, hours=13, minutes=random.randint(15, 25))
                 main(current_time, next_time)
             sleep_time = (next_time - datetime.utcnow()).total_seconds()
             time.sleep(sleep_time)
