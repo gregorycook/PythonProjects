@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+
+            .bold {
+            	font-weight: bold
+            }
+
+            .normal {
+            	font-weight: normal
+            }
+
+            .grid-container {
+              display: grid;
+              grid-template-columns: 325px 325px 325px 200px auto;
+              font-size: 16px;
+              font-family: "Verdana",
+              sans-serif;'
+            }
+
+            .team_table {
+                font-size: 14px;
+                font-family: "Verdana", sans-serif;
+                text-align: center;
+            }
+
+            .team_table td {
+                padding: 0px 10px;
+            }
+
+            .title{
+                font-size: 18px;
+                font-family: "Didot",
+                serif;
+                font-weight: bold;
+            }
+
+            .team-text{
+                font-size: 16px;
+                font-family: "Didot",
+                serif;
+                font-weight: bold;
+            }
+
+        </style>
+        <title>2024 Baseball Over/Under White Board</title>
+    </head>
+    <body>
+    <!--  (next update at <NextUpdateTime/>) -->
+        <div class = "title">Last Updated: <LastUpdated/> UTC</p></div>
+        <div><GamesPlayed/> games played compared to previous <PreviousGamesPlayed/></p></div>
+        <div>Next Game: <b><NextGameTime/></b> vs. <NextGameOpponent/> (<a href="<NextGameLink/>" target="_blank">Game Cast</a>)</p></div>
+        <div class="title">Teams</div>
+        <div class="grid-container">
+            <TeamTables/>
+            <div style='grid-column: 1 / span 3;'>
+                <p class='title'>
+                    <a href="https://www.baseball-reference.com/teams/SEA/2024.shtml" target="_blank">Mariners</a> Team Record and Predictions
+                </p>
+                <RecordTable/></div>
+            <div style='grid-column: 1 / span 3;'>
+                <p class='title'>Over/Under Table</p>
+                <table class="team_table">
+                <tr>
+                    <td></td>
+                    <td>Value</td>
+                    <td>Over</td>
+                    <td>Under</td>
+                    <td>Current</td>
+                    <td>Projected</td>
+                </tr>
+                <OverUnderRows/>
+                </table>
+            </div>
+            <div style='grid-column: 1 / span 3;'>
+                <p class='title'>Other Table</p>
+                <table class="team_table">
+                <tr>
+                    <td></td>
+                    <td>Best</td>
+                    <td>Relevant Stat</td>
+                    <td>Projected Winner</td>
+                </tr>
+                <OtherRows/>
+                </table>
+            </div>
+            <div style='grid-column: 4; grid-row: 1; text-align: center;'>
+                <p>Hans: <Hans/></p>
+                <p>Gregory: <Gregory/></p>
+                <p>Paul: <Paul/></p>
+            </div>
+        </div>
+    </body>
+</html>

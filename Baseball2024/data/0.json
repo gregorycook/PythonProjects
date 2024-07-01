@@ -1,0 +1,212 @@
+{
+	"Mariners": {
+		"RunsScored": 0,
+		"RunsAllowed": 0,
+		"Wins": 0,
+		"Losses": 0,
+		"NextGame": {
+			"Opponent": "Boston Red Sox",
+			"Time": "2024-03-31T01:40Z",
+			"GameCast": "https://www.espn.com/mlb/game/_/gameId/401568496/red-sox-mariners"
+		},
+		"Gregory": { "TeamWAR": 0.0, "Points": 0.0},
+		"Hans": { "TeamWAR": 0.0, "Points": 0.0},
+		"Paul": { "TeamWAR": 0.0, "Points": 0.0},
+		"ProjectedWins": 0.0
+	},
+	"France": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Raleigh": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Polanco": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Rodriguez": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Crawford": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Haniger": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Canzone": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Garver": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Raley": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Urias": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Rojas": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Moore": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Kirby": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Castillo": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Bolton": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Munoz": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Voth": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Saucedo": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Stanek": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Speier": {
+		"SV": 0.0,
+		"IP": 0.0,
+		"ER": 0.0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Clase": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Miller": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Hancock": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Marlowe": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"DeLoach": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Bazardo": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Woo": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Brash": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Stanick": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Haggerty": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Gilbert": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	},
+	"Zavala": {
+		"HR": 0.0,
+		"OPS": 0.0,
+		"WAR": 0.0
+	},
+	"Thornton": {
+		"SV": 0,
+		"IP": 0.0,
+		"ER": 0,
+		"WAR": 0.0,
+		"ERA": 0.0
+	}
+}
