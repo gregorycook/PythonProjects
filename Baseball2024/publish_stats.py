@@ -333,7 +333,8 @@ def get_stat_dict():
         with open(os.path.join(script_path, 'schedule.txt'), "r") as text_file:
             page = text_file.read()
     else:
-        espn_page = 'https://www.espn.com/mlb/team/schedule/_/name/sea/seattle-mariners'
+        # espn_page = 'https://www.espn.com/mlb/team/schedule/_/name/sea/seattle-mariners'
+        espn_page = 'https://www.espn.com/mlb/team/schedule/_/name/sea/seasontype/2/half/2'
         page = requests.get(espn_page, headers)
         page = page.text
 
@@ -647,7 +648,7 @@ def get_other_table(stats):
         add_points(stats, sorted_teams[2]["Name"], 3)
     elif sorted_teams[1]["TeamWAR"] == sorted_teams[2]["TeamWAR"]:
         # first two are tied
-        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams[1:2]]);
+        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams[1:2]])
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(sorted_teams[2]["TeamWAR"])
         others["BestTeam"]["Winner"] = ", ".join([x["Name"] for x in sorted_teams[1:2]])
         add_points(stats, sorted_teams[0]["Name"], 0)
