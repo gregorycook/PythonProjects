@@ -102,21 +102,21 @@ if __name__ == "__main__":
         for person in us:
             row_template = event_row_html_template
             row_template = row_template.replace("<NAME/>", person['name'])
-            competitors = ", ".join(["{} ({})".format(x["Name"], regatta_names[x["Regatta"]]) for x in person['competitors']])
+            competitors = ", ".join(["\r\n{} ({})".format(x["Name"], regatta_names[x["Regatta"]]) for x in person['competitors']])
             row_template = row_template.replace("<COMPETITORS/>", competitors)
             rows.append(row_template)
         event_template = event_template.replace("<NAME/>", event['name'])
-        event_template = event_template.replace("<ROWS/>", " ".join(rows))
+        event_template = event_template.replace("<ROWS/>", "\r\n".join(rows))
         event_html_list.append(event_template)
 
-    html_template = html_template.replace("<EVENTS/>", "<p><p>".join(event_html_list))
+    html_template = html_template.replace("<EVENTS/>", "\r\n<p><p>".join(event_html_list))
 
     link_rows = []
     for job_id in links:
         link_row = regatta_link_row_html_template.format(regatta_names[job_id], links[job_id]["Arlene"], links[job_id]["Gregory"])
         link_rows.append(link_row)
 
-    html_template = html_template.replace("<LINKS/>", " ".join(link_rows))
+    html_template = html_template.replace("<LINKS/>", "\r\n".join(link_rows))
 
     html_template = html_template.replace("<LASTUPDATED/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
 
