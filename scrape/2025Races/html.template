@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Our 2025 Erg Races</title>
+        <style>
+            th, td {
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 10px;
+                padding-right: 10px; }
+            table {
+                border-spacing: 10px;
+                font-size:120% }
+            tr:nth-child(even) {
+                background-color: #D6EEEE; }
+            .title {
+                font-size: 18px;
+                font-family: 'Didot',
+                serif;
+                font-weight: bold;}
+        </style>
+    </head>
+    <body>
+        <div class = 'title'>Last Updated: <LASTUPDATED/> UTC<p></div>
+        <div><EVENTS/><p><p></div>
+        <div>
+            <table>
+                <thead><tr><th>Regatta</th><th>Arlene</th><th>Gregory</th></tr></thead>
+                <tbody><LINKS/></tbody>
+            </table>
+        </div>
+    </body>
+</html>

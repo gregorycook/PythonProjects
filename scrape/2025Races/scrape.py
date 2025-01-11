@@ -1,5 +1,6 @@
 from lxml import html
 from ftplib import FTP
+from datetime import datetime
 
 import json
 import requests
@@ -34,28 +35,7 @@ events = [{'name': 'Crash Bs',
                 {'name': 'Gregory', 'regattas': [(JOB_ERGOMANIA, 72), (JOB_PITTSBURGH, 146), (JOB_ATLANTA, 72), (JOB_CHICAGO, 72), (JOB_TENNESSEE, 72)]}]
             }]
 
-html_template = "" \
-                "<html><head>" \
-                    "<title>Our 2025 Erg Races</title>" \
-                    "<style>" \
-                        "th, td {" \
-                            "padding-top: 5px;" \
-                            "padding-bottom: 10px;" \
-                            "padding-left: 15px;" \
-                            "padding-right: 20px; }" \
-                        "table {" \
-                            "border-spacing: 10px;" \
-                            "font-size:120% }" \
-                        "tr:nth-child(even) {" \
-                            "background-color: #D6EEEE; }" \
-                    "</style>" \
-                "</head>" \
-                "<body>" \
-                "<EVENTS/><p><p>" \
-                "<table><thead><tr><th>Regatta</th><th>Arlene</th><th>Gregory</th></tr></thead><tbody><LINKS/></tbody></table>" \
-                "</body></html>"
-
-event_html_template = "<b><NAME/></b><p><table><thead><tr><th>Event</th><th>Competitors</th></tr></thead><tbody><ROWS/></tbody></table>"
+event_html_template = "<b><div class='title'><NAME/></div></b><p><table><thead><tr><th>Event</th><th>Competitors</th></tr></thead><tbody><ROWS/></tbody></table>"
 
 event_row_html_template = "<tr><td><NAME/></td><td><COMPETITORS/></td><tr>"
 
@@ -71,6 +51,12 @@ def get_page_tree(page_url):
 
 if __name__ == "__main__":
     links = {}
+
+    html_template = ""
+    with open('html.template', "r") as text_file:
+        html_template = text_file.readlines()
+    html_template = "".join(html_template)
+
     for event in events:
         us = event['us']
         for person in us:
@@ -131,6 +117,8 @@ if __name__ == "__main__":
         link_rows.append(link_row)
 
     html_template = html_template.replace("<LINKS/>", " ".join(link_rows))
+
+    html_template = html_template.replace("<LASTUPDATED/>", datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
 
     stats_file = open('2025ErgRaces.html', "w")
     stats_file.write(html_template)
