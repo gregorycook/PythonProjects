@@ -1,0 +1,11 @@
+ftp_creds.json
+white_board.html
+
+*.txt
+*.json
+
+*/bin/*
+*/obj/*
+
+packages/*
+.vs/*
