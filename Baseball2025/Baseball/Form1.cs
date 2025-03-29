@@ -55,8 +55,12 @@ namespace Baseball
             AddStringToBox("Done downloading pitching json\r\n");
             Thread.Sleep(1000);
 
-            LoadPageAndSave("https://www.espn.com/mlb/team/splits/_/name/sea/season/2024", Path.Combine(scriptDirectory, "splits.txt"));
+            LoadPageAndSave("https://www.espn.com/mlb/team/splits/_/name/sea", Path.Combine(scriptDirectory, "splits.txt"));
             AddStringToBox("Done downloading splits json\r\n");
+            Thread.Sleep(1000);
+
+            LoadPageAndSave("https://www.espn.com/mlb/team/stats/_/type/fielding/name/sea", Path.Combine(scriptDirectory, "fielding.txt"));
+            AddStringToBox("Done downloading fielding json\r\n");
 
             ProcessStartInfo start = new ProcessStartInfo();
             start.FileName = "python";

@@ -65,73 +65,44 @@ PAUL = "Paul"
 
 # baseball reference keys
 player_br = {
-    "Rodriguez": {'Fragment': "rodriju01.shtml", 'type': "batting"},
-    "Miller": {'Fragment': "millebr04.shtml", 'type': "pitching"},
-    "Raley": {'Fragment': "raleylu01.shtml", 'type': "batting"},
-    "Woo": {'Fragment': "woobr01.shtml", 'type': "pitching"},
-    "Munoz": {'Fragment': "munozan01.shtml", 'type': "pitching"},
-    "Solano": {'Fragment': "solando01.shtml", 'type': "batting"},
-    "Shenton": {'Fragment': "shentau01.shtml", 'type': "batting"},
-    "Brash": {'Fragment': "brashma01.shtml", 'type': "pitching"},
+    "Julio Rodriguez": {"Team": GREGORY, "Pick": 1, 'Fragment': "rodriju01.shtml", 'type': "batting"},
+    "Bryce Miller": {"Team": GREGORY, "Pick": 6, 'Fragment': "millebr04.shtml", 'type': "pitching"},
+    "Luke Raley": {"Team": GREGORY, "Pick": 7, 'Fragment': "raleylu01.shtml", 'type': "batting"},
+    "Bryan Woo": {"Team": GREGORY, "Pick": 12, 'Fragment': "woobr01.shtml", 'type': "pitching"},
+    "Andres Munoz": {"Team": GREGORY, "Pick": 13, 'Fragment': "munozan01.shtml", 'type': "pitching"},
+    "Donovan Solano": {"Team": GREGORY, "Pick": 18, 'Fragment': "solando01.shtml", 'type': "batting"},
+    "Austin Shenton": {"Team": GREGORY, "Pick": 19, 'Fragment': "shentau01.shtml", 'type': "batting"},
+    "Matt Brash": {"Team": GREGORY, "Pick": 24, 'Fragment': "brashma01.shtml", 'type': "pitching"},
 
+    "Cal Raleigh": {"Team": HANS, "Pick": 2, 'Fragment': "raleica01.shtml", 'type': "batting"},
+    "Logan Gilbert": {"Team": HANS, "Pick": 5, 'Fragment': "gilbelo01.shtml", 'type': "pitching"},
+    "J.P. Crawford": {"Team": HANS, "Pick": 8, 'Fragment': "crawfjp01.shtml", 'type': "batting"},
+    "Randy Arozarena": {"Team": HANS, "Pick": 11, 'Fragment': "arozara01.shtml", 'type': "batting"},
+    "Ryan Bliss": {"Team": HANS, "Pick": 14, 'Fragment': "blissry01.shtml", 'type': "batting"},
+    "Rowdy Tellez": {"Team": HANS, "Pick": 17, 'Fragment': "tellero01.shtml", 'type': "batting"},
+    "Cole Young": {"Team": HANS, "Pick": 20, 'Fragment': "youngco01.shtml", 'type': "batting"},
+    "Gregory Santos": {"Team": HANS, "Pick": 23, 'Fragment': "santogr01.shtml", 'type': "pitching"},
 
-    "Raleigh": {'Fragment': "raleica01.shtml", 'type': "batting"},
-    "Gilbert": {'Fragment': "gilbelo01.shtml", 'type': "pitching"},
-    "Crawford": {'Fragment': "crawfjp01.shtml", 'type': "batting"},
-    "Arozarena": {'Fragment': "arozara01.shtml", 'type': "batting"},
-    "Bliss": {'Fragment': "blissry01.shtml", 'type': "batting"},
-    "Tellez": {'Fragment': "tellero01.shtml", 'type': "batting"},
-    "Young": {'Fragment': "youngco01.shtml", 'type': "batting", "Name": "Cole Young"},
-    "Santos": {'Fragment': "santogr01.shtml", 'type': "pitching"},
+    "George Kirby": {"Team": PAUL, "Pick": 3, 'Fragment': "kirbyge01.shtml", 'type': "pitching"},
+    "Victor Robles": {"Team": PAUL, "Pick": 4, 'Fragment': "roblevi01.shtml", 'type': "batting"},
+    "Dylan Moore": {"Team": PAUL, "Pick": 9, 'Fragment': "mooredy01.shtml", 'type': "batting"},
+    "Luis Castillo": {"Team": PAUL, "Pick": 10, 'Fragment': "castilu02.shtml", 'type': "pitching"},
+    "Jorge Polanco": {"Team": PAUL, "Pick": 15, 'Fragment': "polanjo01.shtml", 'type': "batting"},
+    "Trent Thornton": {"Team": PAUL, "Pick": 16, 'Fragment': "thorntr01.shtml", 'type': "pitching"},
+    "Harry Ford": {"Team": PAUL, "Pick": 21, 'Fragment': "fordha01.shtml", 'type': "batting"},
+    "Eduard Bazardo": {"Team": PAUL, "Pick": 22, 'Fragment': "bazared01.shtml", 'type': "pitching"},
 
-
-    "Kirby": {'Fragment': "kirbyge01.shtml", 'type': "pitching"},
-    "Robles": {'Fragment': "roblevi01.shtml", 'type': "batting"},
-    "Moore": {'Fragment': "mooredy01.shtml", 'type': "batting"},
-    "Castillo": {'Fragment': "castilu02.shtml", 'type': "pitching"},
-    "Polanco": {'Fragment': "polanjo01.shtml", 'type': "batting"},
-    "Thornton": {'Fragment': "thorntr01.shtml", 'type': "pitching"},
-    "Ford": {'Fragment': "fordha01.shtml", 'type': "batting", "Name": "Harry Ford"},
-    "Bazardo": {'Fragment': "bazared01.shtml", 'type': "pitching"},
-
-    "Garver": {'Fragment': "garvemi01.shtml", 'type': "batting"},
+    "Mitch Garver": {'Fragment': "garvemi01.shtml", 'type': "batting"},
 }
 
 teams = {
-    GREGORY: [
-        (1, "Rodriguez", "Julio Rodriguez"),
-        (6, "Miller", "Bryce Miller"),
-        (7, "Raley", "Luke Raley"),
-        (12, "Woo", "Bryan Woo"),
-        (13, "Munoz", "Andres Munoz"),
-        (18, "Solano", "Donovan Solano"),
-        (19, "Shenton", "Austin Shenton"),
-        (24, "Brash", "Matt Brash"),
-    ],
-    HANS: [
-        (2, "Raleigh", "Cal Raleigh"),
-        (5, "Gilbert", "Logan Gilbert"),
-        (8, "Crawford", "J.P. Crawford"),
-        (11, "Arozarena", "Randy Arozarena"),
-        (14, "Bliss", "Ryan Bliss"),
-        (17, "Tellez", "Rowdy Tellez"),
-        (20, "Young", "Cole Young"),
-        (23, "Santos", "Gregory Santos"),
-    ],
-    PAUL: [
-        (3, "Kirby", "George Kirby"),
-        (4, "Robles", "Victor Robles"),
-        (9, "Moore", "Dylan Moore"),
-        (10, "Castillo", "Luis Castillo"),
-        (15, "Polanco", "Jorge Polanco"),
-        (16, "Thornton", "Trent Thornton"),
-        (21, "Ford", "Harry Ford"),
-        (22, "Bazardo", "Eduard Bazardo"),
-    ]
+    GREGORY: [],
+    HANS: [],
+    PAUL: []
 }
 
 
-def accumulate_group_stat(item, stats, names=None):
+def accumulate_group_stat(item, stats):
     local_name = item["Stat"]
     guys = item["Guys"]
     total = 0
@@ -141,10 +112,7 @@ def accumulate_group_stat(item, stats, names=None):
         stat = stats[guy][local_name]
         total = total + stat
         if stat > 0:
-            player = guy
-            if names is not None:
-                player = names[guy]["Name"]
-            tool_tip = "{}&#10;{}: {}".format(tool_tip, player, my_round(stat, 0))
+            tool_tip = "{}&#10;{}: {}".format(tool_tip, guy, my_round(stat, 0))
 
     return total, tool_tip
 
@@ -172,6 +140,13 @@ def get_pitcher_count():
 
 def get_stat_dict():
     stat_dict = {'Mariners': {}}
+
+    print("Construct Team")
+    for player in player_br:
+        if "Team" in player_br[player]:
+            team = player_br[player]["Team"]
+            pick = player_br[player]["Pick"]
+            teams[team].append((pick, player))
 
     print("Extracting batting stats")
     page = None
@@ -202,11 +177,14 @@ def get_stat_dict():
 
     player_stats = batting_stats['playerStats'][0]
 
+    stat_dict['Mariners']['PositionPlayersUsed'] = []
     collect_batting = ['homeRuns', 'OPS', 'WARBR', 'stolenBases']
     for player in player_stats:
-        name = player['athlete']['shortName'][player['athlete']['shortName'].index(' ') + 1:]
+        name = player['athlete']['name']
+        gp = my_round(float(player['statGroups']['stats'][0]['displayValue']), 3)
+        if gp > 0:
+            stat_dict['Mariners']['PositionPlayersUsed'].append(name)
         if name in player_br:
-            player_br[name]["Name"] = player['athlete']['name']
             this_player_stats = {}
             stat_dict[name] = this_player_stats
             for stat in player['statGroups']['stats']:
@@ -349,6 +327,47 @@ def my_round(value, places):
         return round(float(value)*10**places)/10**places
 
 
+def calculate_linear(item, games_played, offset=0):
+    if games_played == 0:
+        item["Projected"] = item["Current"]
+    else:
+        projected = (item["Current"] - offset) * 162 / games_played + offset
+        if projected < offset:
+            projected = offset
+        item["Projected"] = projected
+
+
+def calculate_copy_current(item, games_played):
+    item["Projected"] = item["Current"]
+
+
+def calculate_manual_list(stats, item):
+    item["Current"] = len(item["Guys"])
+    item["ToolTip"] = "&#10;".join(item["Guys"])
+
+
+def calculate_accumulation(stats, item):
+    total, tip = accumulate_group_stat(item, stats)
+    item["Current"] = total
+    item["ToolTip"] = tip
+
+
+def calculate_negative_war(stats, item):
+    result = 0
+    for team in teams:
+        for player in teams[team]:
+            if stats[player[1]]["WAR"] < 0:
+                result += 1
+
+    item["Current"] = result
+
+
+def calculate_infield_home_runs(stats, item):
+    infield_homeruns, tool_tip = accumulate_group_stat(item, stats['Mariners']['HomeRuns']['ByPosition'])
+    item["Current"] = infield_homeruns
+    item["ToolTip"] = tool_tip
+
+
 def maybe_bold(over_under, names, value, target):
     if over_under == "Under" and value < target:
         return "<b>" + ", ".join(names) + "</b>"
@@ -370,13 +389,11 @@ def get_team_tables(new_stats, old_stats):
         for player_stuff in teams[team]:
             player_key = player_stuff[1]
             war = new_stats[player_key]["WAR"]
-            player_br[player_key]['Name'] = player_stuff[2]
             if war > high_war:
                 high_war = war
         for player_stuff in teams[team]:
             draft = player_stuff[0]
             player_key = player_stuff[1]
-            name = player_br[player_key]['Name']
             fragment = player_br[player_key]['Fragment']
             war = new_stats[player_key]["WAR"]
             try:
@@ -389,7 +406,7 @@ def get_team_tables(new_stats, old_stats):
             war_column_class = "normal"
             if war == high_war:
                 war_column_class = "bold"
-            player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(fragment[0].lower(), fragment, name)
+            player_html = "<a target='_blank' href='https://www.baseball-reference.com/players/{}/{}'>{}</a>".format(fragment[0].lower(), fragment, player_key)
             row = "\r\n\t<tr>\r\n\t\t<td>{}</td>\r\n\t\t<td>{}</td>\r\n\t\t<td class='{}' align='right'>{:.1f}</td><td>{}</td>\r\n\t</tr>".format(draft, player_html, war_column_class, war, war_delta_text)
             table = table + row
 
@@ -433,26 +450,19 @@ def get_projected_record_table(stats):
            "/tr>\r\n</table>".format(wins, losses, runs_scored, runs_allowed, 100*pythagorean_percent, projected_wins)
 
 
-def get_total_negative_war(stats):
-    result = 0
-    for team in teams:
-        for player in teams[team]:
-            if stats[player[1]]["WAR"] < 0:
-                result += 1
-
-    return result
-
-
 def convert_innings_pitched(standard_ip):
     truncated = my_round(standard_ip, 0)
     outs = standard_ip - truncated
     return truncated + 10 * outs / 3
 
 
-def add_points(stats, name, thing, points):
-    stats["Mariners"][name]["Points"] = stats["Mariners"][name]["Points"] + points
-    if points > 0:
-        stats["Mariners"][name]["PointContributors"].append((thing, points))
+def add_points(stats, names, thing, points):
+    if isinstance(names, str):
+        names = [names]
+    for name in names:
+        stats["Mariners"][name]["Points"] = stats["Mariners"][name]["Points"] + points
+        if points != 0:
+            stats["Mariners"][name]["PointContributors"].append((thing, points))
 
 
 def get_over_under_table(stats):
@@ -464,9 +474,11 @@ def get_over_under_table(stats):
             "Over": [GREGORY],
             "Under": [HANS, PAUL],
             "Rounding": (0, 1),
-            "Guys": ["Polanco", "Moore", "Raley", "Solano", "Crawford", "Arozarena", "Tellez", "Garver"],
+            "Guys": ["Jorge Polanco", "Dylan Moore", "Luke Raley", "Donovan Solano", "J.P. Crawford", "Randy Arozarena", "Rowdy Tellez", "Mitch Garver"],
             "Points": 1,
-            "Stat": "HR"
+            "Stat": "HR",
+            "Calculation": calculate_accumulation,
+            "Projection": calculate_linear
         },
         "RodriguezOPS": {
             "Title": "Rodriguez OPS",
@@ -474,7 +486,11 @@ def get_over_under_table(stats):
             "Over": [GREGORY],
             "Under": [HANS, PAUL],
             "Rounding": (3, 3),
-            "Points": 1
+            "Points": 1,
+            "Guys": ["Julio Rodriguez"],
+            "Stat": "OPS",
+            "Calculation": calculate_accumulation,
+            "Projection": calculate_copy_current
         },
         "Wins": {
             "Title": "Wins",
@@ -490,7 +506,9 @@ def get_over_under_table(stats):
             "Over": [HANS],
             "Under": [GREGORY, PAUL],
             "Rounding": (0, 1),
-            "Points": 1
+            "Points": 1,
+            "Calculation": calculate_negative_war,
+            "Projection": calculate_copy_current
         },
         "FourYoungPitcherWins": {
             "Title": "4 Young Pitcher Wins",
@@ -499,8 +517,10 @@ def get_over_under_table(stats):
             "Under": [GREGORY],
             "Rounding": (0, 1),
             "Points": 1,
-            "Guys": ["Gilbert", "Woo", "Miller", "Kirby"],
-            "Stat": "W"
+            "Guys": ["Logan Gilbert", "Bryan Woo", "Bryce Miller", "George Kirby"],
+            "Stat": "W",
+            "Calculation": calculate_accumulation,
+            "Projection": calculate_linear
         },
         "AllStars": {
             "Title": "All Stars",
@@ -509,16 +529,21 @@ def get_over_under_table(stats):
             "Under": [GREGORY, PAUL],
             "Rounding": (0, 0),
             "Points": 1,
-            "Guys": []
+            "Guys": [],
+            "Calculation": calculate_manual_list,
+            "Projection": calculate_copy_current
         },
         "Released": {
             "Title": "Released/DFAed",
             "Value": 7.5,
             "Over": [HANS, PAUL],
             "Under": [GREGORY],
-            "Rounding": (0, 0),
+            "Rounding": (0, 1),
             "Points": 1,
-            "Guys": ["Mitch Haniger"]
+            "Guys": ["Mitch Haniger"],
+            "Calculation": calculate_manual_list,
+            "Projection": calculate_linear,
+            "ProjectionOffset": 5
         },
         "InfieldHomeRuns": {
             "Title": "Home Runs by the Infield",
@@ -528,7 +553,21 @@ def get_over_under_table(stats):
             "Rounding": (0, 1),
             "Points": 1,
             "Guys": ["As 1B", "As 2B", "As 3B", "As SS", "As DH"],
-            "Stat": "HR"
+            "Stat": "HR",
+            "Calculation": calculate_infield_home_runs,
+            "Projection": calculate_linear
+        },
+        "PositionPlayersUsed": {
+            "Title": "Position Players Used",
+            "Value": 24.5,
+            "Under": [HANS],
+            "Over": [GREGORY, PAUL],
+            "Rounding": (0, 1),
+            "Points": 1,
+            "Guys": stats['Mariners']['PositionPlayersUsed'],
+            "Calculation": calculate_manual_list,
+            "Projection": calculate_linear,
+            "ProjectionOffset": 14
         }
     }
 
@@ -538,60 +577,18 @@ def get_over_under_table(stats):
     over_unders["Wins"]["Current"] = stats["Mariners"]["Wins"]
     over_unders["Wins"]["Projected"] = stats["Mariners"]["ProjectedWins"]
 
-    total_negative_war = get_total_negative_war(stats)
-    over_unders["NegativeWAR"]["Current"] = total_negative_war
-    over_unders["NegativeWAR"]["Projected"] = total_negative_war
-
-    # pitcher_count = stats["Mariners"]["PitcherCount"]
-    # projected_pitcher_count = (pitcher_count-14) * (162 / (wins + losses)) + 14
-    # if projected_pitcher_count < 14:
-    #     projected_pitcher_count = 14
-    # over_unders["PitcherCount"]["Current"] = pitcher_count
-    # over_unders["PitcherCount"]["Projected"] = projected_pitcher_count
-
-    rodriguez_ops = stats["Rodriguez"]["OPS"]
-    over_unders["RodriguezOPS"]["Current"] = rodriguez_ops
-    over_unders["RodriguezOPS"]["Projected"] = rodriguez_ops
-
-    old_guy_homers, tool_tip = accumulate_group_stat(over_unders["OldHomers"], stats, player_br)
-    over_unders["OldHomers"]["Current"] = old_guy_homers
-    if wins + losses > 0:
-        over_unders["OldHomers"]["Projected"] = 162 / (wins + losses) * old_guy_homers
-    else:
-        over_unders["OldHomers"]["Projected"] = 0
-    over_unders["OldHomers"]["ToolTip"] = tool_tip
-
-    young_pitcher_wins, tool_tip = accumulate_group_stat(over_unders["FourYoungPitcherWins"], stats, player_br)
-    over_unders["FourYoungPitcherWins"]["Current"] = young_pitcher_wins
-    if wins + losses > 0:
-        over_unders["FourYoungPitcherWins"]["Projected"] = 162 / (wins + losses) * young_pitcher_wins
-    else:
-        over_unders["FourYoungPitcherWins"]["Projected"] = 0
-    over_unders["FourYoungPitcherWins"]["ToolTip"] = tool_tip
-
-    infield_homeruns, tool_tip = accumulate_group_stat(over_unders["InfieldHomeRuns"], stats['Mariners']['HomeRuns']['ByPosition'])
-    over_unders["InfieldHomeRuns"]["Current"] = infield_homeruns
-    if wins + losses > 0:
-        over_unders["InfieldHomeRuns"]["Projected"] = 162 / (wins + losses) * young_pitcher_wins
-    else:
-        over_unders["InfieldHomeRuns"]["Projected"] = 0
-    over_unders["InfieldHomeRuns"]["ToolTip"] = tool_tip
-
-    over_unders["AllStars"]["Current"] = len(over_unders["AllStars"]["Guys"])
-    over_unders["AllStars"]["Projected"] = 1
-
-    over_unders["Released"]["Current"] = len(over_unders["Released"]["Guys"])
-    if wins + losses > 0:
-        over_unders["Released"]["Projected"] = 162 / (wins + losses) * over_unders["Released"]["Current"]
-    else:
-        over_unders["Released"]["Projected"] = 0
-    over_unders["Released"]["Projected"] = over_unders["Released"]["Current"]
-    over_unders["Released"]["ToolTip"] = "&#10;".join(over_unders["Released"]["Guys"])
-
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td>{}</td><td {}>{num1:.{places1}f}</td><td>{num2:.{places2}f}</td>"
     rows = []
     for over_under in over_unders:
         item = over_unders[over_under]
+
+        if "Calculation" in item:
+            item["Calculation"](stats, item)
+        if "Projection" in item:
+            if "ProjectionOffset" in item:
+                item["Projection"](item, wins + losses, item["ProjectionOffset"])
+            else:
+                item["Projection"](item, wins + losses)
 
         tool_tip = ''
         if 'ToolTip' in item:
@@ -638,19 +635,16 @@ def get_other_table(stats):
 
     if stats["Mariners"][HANS]["TeamWAR"] == stats["Mariners"][GREGORY]["TeamWAR"] and stats["Mariners"][GREGORY]["TeamWAR"] == stats["Mariners"][PAUL]["TeamWAR"]:
         # all three are tied
-        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams]);
+        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams])
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(sorted_teams[0]["TeamWAR"])
         others["BestTeam"]["Winner"] = ", ".join([x["Name"] for x in sorted_teams])
-        add_points(stats, sorted_teams[0]["Name"], "BestTeam", 1.3333)
-        add_points(stats, sorted_teams[1]["Name"], "BestTeam", 1.3333)
-        add_points(stats, sorted_teams[2]["Name"], "BestTeam", 1.3333)
+        add_points(stats, [x["Name"] for x in sorted_teams], "BestTeam", 4/3)
     elif sorted_teams[0]["TeamWAR"] == sorted_teams[1]["TeamWAR"]:
         # last two are tied
-        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams[0:2]]);
+        others["BestTeam"]["Best"] = ", ".join(["Team " + x["Name"] for x in sorted_teams[0:2]])
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(sorted_teams[2]["TeamWAR"])
         others["BestTeam"]["Winner"] = sorted_teams[-1]["Name"]
-        add_points(stats, sorted_teams[0]["Name"], "BestTeam", 0.5)
-        add_points(stats, sorted_teams[1]["Name"], "BestTeam", 0.5)
+        add_points(stats, [sorted_teams[0]["Name"], sorted_teams[1]["Name"]], "BestTeam", 0.5)
         add_points(stats, sorted_teams[2]["Name"], "BestTeam", 3)
     elif sorted_teams[1]["TeamWAR"] == sorted_teams[2]["TeamWAR"]:
         # first two are tied
@@ -658,8 +652,7 @@ def get_other_table(stats):
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(sorted_teams[2]["TeamWAR"])
         others["BestTeam"]["Winner"] = ", ".join([x["Name"] for x in sorted_teams[1:2]])
         add_points(stats, sorted_teams[0]["Name"], "BestTeam", 0)
-        add_points(stats, sorted_teams[1]["Name"], "BestTeam", 2)
-        add_points(stats, sorted_teams[2]["Name"], "BestTeam", 2)
+        add_points(stats, [sorted_teams[1]["Name"], sorted_teams[2]["Name"]], "BestTeam", 2)
     else:
         others["BestTeam"]["Best"] = "Team " + sorted_teams[-1]["Name"];
         others["BestTeam"]["Relevant"] = "{:.1f} WAR".format(sorted_teams[2]["TeamWAR"])
@@ -678,20 +671,20 @@ def get_other_table(stats):
     for team in teams:
         for player in teams[team]:
             if stats[player[1]]["WAR"] > global_high_war:
-                best_players = [player[2]]
+                best_players = [player[1]]
                 global_high_war = stats[player[1]]["WAR"]
                 best_player_winners = [team]
             elif stats[player[1]]["WAR"] == global_high_war:
-                best_players.append(player[2])
+                best_players.append(player[1])
                 if team not in best_player_winners:
                     best_player_winners.append(team)
 
             if stats[player[1]]["WAR"] < global_low_war:
-                worst_players = [player[2]]
+                worst_players = [player[1]]
                 global_low_war = stats[player[1]]["WAR"]
                 worst_player_losers = [team]
             elif stats[player[1]]["WAR"] == global_low_war:
-                worst_players.append(player[2])
+                worst_players.append(player[1])
                 if team not in worst_player_losers:
                     worst_player_losers.append(team)
 
@@ -699,13 +692,10 @@ def get_other_table(stats):
     others["BestPlayer"]["Relevant"] = "{:.1f} WAR".format(global_high_war)
     others["BestPlayer"]["Winner"] = ", ".join(best_player_winners)
 
-    worst_player_winners = [GREGORY, HANS, PAUL]
-    for team in worst_player_losers:
-        worst_player_winners.remove(team);
-
     others["WorstPlayer"]["Best"] = ", ".join(worst_players)
     others["WorstPlayer"]["Relevant"] = "{:.1f} WAR".format(global_low_war)
-    others["WorstPlayer"]["Winner"] = ", ".join(worst_player_winners)
+    others["WorstPlayer"]["Winner"] = ", ".join(worst_player_losers)
+    add_points(stats, worst_player_losers, "WorstPlayer", -1/len(worst_player_losers))
 
     others["MakePlayoffs"]["Relevant"] = "Current Playoff Seed = {}".format(stats["Mariners"]["PlayoffSeed"])
     if stats["Mariners"]["PlayoffSeed"] <= 6:
@@ -714,9 +704,7 @@ def get_other_table(stats):
     else:
         others["MakePlayoffs"]["Best"] = "No"
         others["MakePlayoffs"]["Winner"] = ", ".join([GREGORY, HANS, PAUL])
-        add_points(stats, HANS, "MakePlayoffs", 0)
-        add_points(stats, GREGORY, "MakePlayoffs", 0)
-        add_points(stats, PAUL, "MakePlayoffs", 0)
+        add_points(stats, [GREGORY, HANS, PAUL], "MakePlayoffs", 0)
 
     row_template = "<td>{}</td><td>{}</td><td>{}</td><td class='bold'>{}</td>"
     rows = []
@@ -734,11 +722,9 @@ def calculate_scores(stats, over_unders, others):
     for item in over_unders:
         points = over_unders[item]["Points"]
         if over_unders[item]["Projected"] <= over_unders[item]["Value"]:
-            for name in over_unders[item]["Under"]:
-                add_points(stats, name, item, points)
+            add_points(stats, over_unders[item]["Under"], item, points)
         if over_unders[item]["Projected"] >= over_unders[item]["Value"]:
-            for name in over_unders[item]["Over"]:
-                add_points(stats, name, item, points)
+            add_points(stats, over_unders[item]["Over"], item, points)
 
 
 def save_stats(stats):
